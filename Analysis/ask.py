@@ -170,6 +170,7 @@ HIRING = re.compile(r"hir|headcount|\breqs?\b|REQ-|freez|frozen|pause|on hold|ap
 FREEZE = re.compile(r"freez|frozen|paused|on hold|hold the line|hold them|no new|is a no|not moving forward|"
                     r"don't bother submitting", re.I)
 HIRE = re.compile(r"REQ-\d+ approved|REQ-\d+, approved|status=APPROVED|seated|get an AE|add(ing)? bodies|keep hiring", re.I)
+LIFT = re.compile(r"lift(ing|ed)? the freeze|unfreez|freeze (is |has been )?lifted|resum(e|ing) (sales )?hiring", re.I)
 DEFER = re.compile(r"park it|see how .* looks before|before we add", re.I)
 
 
@@ -190,6 +191,8 @@ def stance(text: str) -> str:
     # a question ("do we keep hiring into Sales or hold?") is not a position
     if re.search(r"\?\s*$|question on the table", text, re.I) and not re.search(r"\bDECISION\b", text):
         return "context"
+    if LIFT.search(text):
+        return "HIRE"
     if FREEZE.search(text):
         return "FREEZE"
     if HIRE.search(text):
@@ -265,7 +268,8 @@ def answer_sales(root: Path) -> str:
     out.append(f"**Answer: Sales hiring is {word}** (decided {dec_when:%Y-%m-%d}). "
                f"**Decision owner: {owner or 'not stated'}**" + (f" (CEO)" if owner == ceo else "") +
                (f"; **enforcer on reqs: {enf}**" if enf else "") +
-               ". REQ-114 (Account Executive) is paused, not cancelled.\n")
+               "." + (" REQ-114 (Account Executive) is paused, not cancelled." if state == "FREEZE" and any(
+                   re.search(r"paused, not killed|on hold", e[3].text) for e in support) else "") + "\n")
     out.append(f"**Confidence: {conf}** — {len(indep)} independent sources ({", ".join(sorted(w or f for f, w in indep))}) state it is {word.lower()} on/after the decision"
                + ("; no later statement contradicts it." if not later_contra else f"; {len(later_contra)} later contradicting statement(s)."))
     out.append("\n### Key evidence")
@@ -286,9 +290,11 @@ def answer_sales(root: Path) -> str:
         out.append(f"| {when:%Y-%m-%d} | {st}{' (decision)' if dec else ''} | {who} | {short(m.text, 90)} | {m.cite} |")
 
     out.append("\n### Conflicts resolved")
+    stale_says = [m for m in msgs if m.when.date() >= dec_day and re.search(r"stale|superseded", m.text, re.I)]
     for e in stale:
         out.append(f"- Roster snapshot {roster.snapshot} shows **{e[3].text}** {e[3].cite} — superseded by the "
-                   f"{dec_when:%Y-%m-%d} decision; three later sources call the roster stale.")
+                   f"{dec_when:%Y-%m-%d} decision" + (f"; explicitly called stale/superseded in "
+                   + ", ".join(str(m.cite) for m in stale_says) if stale_says else "") + ".")
     dates = sorted({e[0].date() for e in streak})
     if len(dates) > 1:
         out.append(f"- The same decision appears dated {', '.join(map(str, dates))} (Slack message vs. written minutes; "
@@ -296,7 +302,9 @@ def answer_sales(root: Path) -> str:
                    "earliest timestamp used.")
 
     out.append("\n### Could NOT verify")
-    out.append("- Whether the July leadership sync lifted or kept the freeze — the bundle ends 2026-06-18.")
+    last = max(m.when for m in msgs)
+    out.append(f"- Whether the decision has changed since the last message in the bundle ({last:%Y-%m-%d}) — e.g. at the "
+               "revisit point named above.")
     for m in loose[:3]:
         out.append(f"- Open action: \"{short(m.text)}\" {m.cite} — completion not evidenced.")
     out.append("- Greenhouse (ATS) status of REQ-114 — no ATS export in the bundle.")

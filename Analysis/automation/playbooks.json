@@ -1,0 +1,24 @@
+{
+  "_comment": "Routing + assumptions for support_autopilot.py. Every number here is an ASSUMPTION (no data in the bundle measures post-automation effort) and is surfaced in the report with a sensitivity table.",
+  "fallback_rate": 0.20,
+  "playbooks": {
+    "Thumbnail re-upload": {
+      "action": "SELF_SERVE_THUMBNAIL",
+      "residual_minutes": 5,
+      "why": "Creator swaps the thumbnail via a self-serve link; human only spot-checks. Ops asked for exactly this (slack_export.md:L193)."
+    },
+    "Tax form (W-9/W-8)": {
+      "action": "ESIGN_TAX_FORM",
+      "residual_minutes": 10,
+      "reminder_days": [3, 7, 14],
+      "escalate_after_days": 21,
+      "why": "E-sign request + automatic reminder cadence replaces manual chasing; human verifies the returned form. People suggested e-sign services (slack_export.md:L204)."
+    }
+  },
+  "out_of_scope": {
+    "Payout question": "Needs the payout tracker, which is not in the bundle (same gap as the brand-deal recon).",
+    "Login issue": "Account security - keep human.",
+    "Account access": "Account security - keep human.",
+    "Content takedown": "Legal/brand judgment - keep human."
+  }
+}

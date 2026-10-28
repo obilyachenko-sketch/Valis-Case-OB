@@ -1,6 +1,6 @@
 # Ask-with-sources — CEO questions
 
-_Generated 2026-10-28 17:17 by `Analysis/ask.py` from the raw files in `valis-case-ob/`. Citations are `file:Lline`._
+_Generated 2026-10-28 17:19 by `Analysis/ask.py` from the raw files in `valis-case-ob/`. Citations are `file:Lline`._
 
 **Confidence scale used**
 - **High** — read directly from a primary record *and* corroborated by an independent source; no open conflict.
@@ -94,11 +94,11 @@ _Generated 2026-10-28 17:17 by `Analysis/ask.py` from the raw files in `valis-ca
 | 2026-06-15 | FREEZE | Elena Novak | Q3 planning prep: if you want any new headcount considered, get it to me with justificati… | `slack_export.md:L244` (Elena Novak, 2026-06-15 14:00) |
 
 ### Conflicts resolved
-- Roster snapshot 2026-05-01 shows **REQ-114 Account Executive status=APPROVED target_start=2026-07-15 HM=Tomás Reyes** `headcount_roster.csv:L22` — superseded by the 2026-06-10 decision; three later sources call the roster stale.
+- Roster snapshot 2026-05-01 shows **REQ-114 Account Executive status=APPROVED target_start=2026-07-15 HM=Tomás Reyes** `headcount_roster.csv:L22` — superseded by the 2026-06-10 decision; explicitly called stale/superseded in `slack_export.md:L230` (Elena Novak, 2026-06-11 09:30), `meeting_notes/leadership_sync_2026-06-11.md:L16` (minutes by Marcus, 2026-06-11).
 - The same decision appears dated 2026-06-10, 2026-06-11 (Slack message vs. written minutes; People's Jun 11 post says "following yesterday's leadership call"). Treated as one decision; earliest timestamp used.
 
 ### Could NOT verify
-- Whether the July leadership sync lifted or kept the freeze — the bundle ends 2026-06-18.
+- Whether the decision has changed since the last message in the bundle (2026-06-16) — e.g. at the revisit point named above.
 - Open action: "- Tomás flagged candidate already in late-stage interviews for REQ-114 — Priya to confirm whether to pause or…" `meeting_notes/leadership_sync_2026-06-11.md:L20` (minutes by Marcus, 2026-06-11) — completion not evidenced.
 - Open action: "- Elena (People) to be looped in so recruiting pauses the req in Greenhouse. Action: Marcus to notify Elena." `meeting_notes/leadership_sync_2026-06-11.md:L21` (minutes by Marcus, 2026-06-11) — completion not evidenced.
 - Open action: "| 1 | Confirm REQ-114 candidate handling (pause vs finish loop, no offer) | Priya + Tomás | 2026-06-13 |" `meeting_notes/leadership_sync_2026-06-11.md:L42` (minutes by Marcus, 2026-06-11) — completion not evidenced.

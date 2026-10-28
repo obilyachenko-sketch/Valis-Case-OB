@@ -1,0 +1,25 @@
+{
+  "input_rows": 140,
+  "processed": 140,
+  "quarantined": 0,
+  "warnings": [
+    "TCK-1013 (line 14): blank Assigned_To \u2014 kept; effort is still logged",
+    "TCK-1038 (line 39): blank Assigned_To \u2014 kept; effort is still logged",
+    "TCK-1068 (line 69): blank Assigned_To \u2014 kept; effort is still logged",
+    "TCK-1100 (line 101): blank Assigned_To \u2014 kept; effort is still logged"
+  ],
+  "weeks_covered": 12.71,
+  "before_minutes": 4230,
+  "after_minutes": 2434.0,
+  "before_hours": 70.5,
+  "after_hours": 40.6,
+  "saved_hours": 29.9,
+  "saved_pct": 42.5,
+  "before_hours_per_week": 5.54,
+  "after_hours_per_week": 3.19,
+  "tickets_deflected": 99,
+  "actions_generated": 243,
+  "human_touches_before": 140,
+  "human_touches_after_expected": 60.8,
+  "fallback_rate": 0.2
+}
