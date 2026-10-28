@@ -25,10 +25,11 @@
   .legend span { display: inline-flex; align-items: center; gap: 6px; }
   .sw { width: 12px; height: 12px; border-radius: 3px; display: inline-block; }
   .sw.hatch { background: repeating-linear-gradient(45deg, var(--dup) 0 3px, color-mix(in srgb, var(--dup) 55%, white) 3px 4.5px); outline: 1.5px solid var(--dup); }
+  .sw.booked { background: color-mix(in srgb, var(--total) 18%, transparent); border: 1.5px dashed var(--total); }
   .sw.dash { height: 0; border-top: 2px dashed var(--dup); border-radius: 0; width: 16px; }
   .chart { position: relative; }
   svg { width: 100%; height: auto; display: block; overflow: visible; }
-  .tick text, .xlab { fill: var(--muted); font-size: 12px; }
+  .tick text { fill: var(--muted); font-size: 12px; } .xlab { fill: var(--ink-2); font-size: 15px; }
   .gridline { stroke: var(--grid); stroke-width: 1; }
   .conn { stroke: var(--muted); stroke-width: 1; stroke-dasharray: 2 2; opacity: .6; }
   .val { fill: var(--ink-2); font-size: 11.5px; font-variant-numeric: tabular-nums; }
@@ -60,9 +61,9 @@
   <h1>Q1 2026 SaaS: $81,000 booked, $73,500 after removing the Amplitude duplicate</h1>
   <p class="sub">Northwind Media · Software &amp; SaaS, Q1 2026 (USD) · correct spend broken down by vendor, highest to lowest</p>
   <div class="legend" aria-hidden="true">
-    <span><i class="sw" style="background:var(--total)"></i>Total</span>
+    <span><i class="sw booked"></i>Booked (as listed in P&amp;L)</span>
     <span><i class="sw hatch"></i>⚠ Suspected duplicate, removed (Amplitude Analytics)</span>
-    <span><i class="sw" style="background:var(--bar)"></i>Vendor (deducted from correct spend)</span>
+    <span><i class="sw" style="background:var(--bar)"></i>Correct spend and vendors</span>
   </div>
   <div class="chart" id="chart"><div id="tip" role="tooltip"></div></div>
   <div class="callout">
@@ -101,7 +102,7 @@ ITEMS.filter(d => !d[3]).sort((a, b) => b[1] - a[1] || a[0].localeCompare(b[0]))
 });
 if (run !== 0) console.warn("Waterfall does not close to 0:", run);
 
-const W = 1032, H = 470, M = { t: 34, r: 16, b: 110, l: 56 };
+const W = 1032, H = 560, M = { t: 34, r: 16, b: 190, l: 56 };
 const iw = W - M.l - M.r, ih = H - M.t - M.b;
 const yMax = 90000, y = v => M.t + ih - (v / yMax) * ih;
 const step = iw / bars.length, bw = Math.min(40, step - 10);
@@ -130,8 +131,9 @@ bars.forEach((b, i) => {
   if (i < bars.length - 1) { const nb = bars[i + 1];
     const lv = nb.kind === "dup" ? b.y1 : nb.kind === "total2" ? (b.kind === "dup" ? b.y0 : b.y1) : (b.kind === "item" ? b.y0 : b.y1);
     el("line", { class: "conn", x1: x(i) + bw, x2: x(i + 1), y1: y(lv), y2: y(lv) }, G); }
-  const fill = b.kind === "dup" ? "url(#hatch)" : b.kind.startsWith("total") ? "var(--total)" : "var(--bar)";
+  const fill = b.kind === "dup" ? "url(#hatch)" : b.kind === "total" ? "color-mix(in srgb, var(--total) 18%, transparent)" : "var(--bar)";
   const r = el("rect", { class: "bar", x: x(i), y: top, width: bw, height: h, rx: 3, fill }, G);
+  if (b.kind === "total") { r.setAttribute("stroke", "var(--total)"); r.setAttribute("stroke-width", 1.5); r.setAttribute("stroke-dasharray", "5 4"); }
   if (b.kind === "dup") el("rect", { x: x(i) - 1.5, y: top - 1.5, width: bw + 3, height: h + 3, rx: 4, fill: "none", stroke: "var(--dup)", "stroke-width": 1.5 }, G);
   b.rect = r;
   // labels: value above each bar (short), bold on dup + total
@@ -140,7 +142,7 @@ bars.forEach((b, i) => {
   lab.textContent = b.kind.startsWith("total") ? fmt(b.v) : (b.kind === "dup" ? "⚠ −" + fmtK(-b.v) : "−" + fmtK(-b.v));
   if (b.kind === "dup") lab.style.fill = "var(--dup)";
   // x label
-  const tx = el("text", { class: "xlab", transform: `translate(${x(i) + bw / 2},${M.t + ih + 14}) rotate(-38)`, "text-anchor": "end" }, svg);
+  const tx = el("text", { class: "xlab", transform: `translate(${x(i) + bw / 2 + 5},${M.t + ih + 10}) rotate(-90)`, "text-anchor": "end" }, svg);
   tx.textContent = b.name;
   if (b.kind === "dup") { tx.setAttribute("fill", "var(--dup)"); tx.setAttribute("font-weight", "650"); }
   if (b.kind.startsWith("total")) { tx.setAttribute("fill", "var(--ink)"); tx.setAttribute("font-weight", "650"); }
