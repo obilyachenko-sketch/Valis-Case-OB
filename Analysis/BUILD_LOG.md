@@ -105,3 +105,9 @@ Format for judgment calls: **JC-nn** — what looked wrong → what I decided �
 - **JC-28** — Rows from the minutes and roster carry a date but no time; shown date-only with a cell note rather than a fake 00:00. *Reason: don't imply precision the source doesn't have.*
 - **JC-29** — Tomás's "putting my objection on record" (slack L73) is classed FREEZE (complying), not HIRE. *Reason: he accepts the decision; dissent isn't a reversal.*
 - **JC-30** — Revisit timing has three wordings (Q2 review / when pipeline recovers / July sync with a trigger) → logged as C3, minutes taken as most specific. *Reason: compatible, not contradictory.*
+| 18:51 | Prompt | "ok build the chart" (Q2) |
+| 18:58 | Files | `build_sales_chart.py` + `templates/sales_timeline_template.html` → `output/sales_hiring_timeline.html` / `.png`. Data comes from the same `ROWS` as the workbook (one source of truth). Swimlanes Hire / Defer / Freeze / Context; state bands Debate → Approved → FROZEN → unknown. |
+| 18:58 | Dead-ends | v1 used a continuous date axis: 12 statements on Jun 10–11 piled into one blob and leader labels collided. Switched to ordinal date columns with gap markers (10d, 40d, 4d) and numbered badges + a key. Also a JS crash: `const top` clashes with the browser's `window.top`. |
+
+- **JC-31** — Ordinal (broken) time axis, not a linear one. *Reason: activity is bursty (Apr 21, May 1, Jun 10–11, Jun 15); a linear axis spends ~60% of the width on empty weeks. Gaps are labelled so the compression is visible.*
+- **JC-32** — Freeze uses aqua #1baf7a, which falls below 3:1 contrast on the light surface (validator WARN). Relief: lanes are labelled, dots aren't the only cue, and there's a table view; band label text uses ink, not aqua. *Reason: palette's first three slots are the only all-pairs-safe set.*

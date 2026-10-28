@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Q2 — Sales hiring: from "hire" to "frozen"</title>
+<style>
+  :root {
+    --surface: #fcfcfb; --ink: #0b0b0b; --ink-2: #52514e; --muted: #898781; --grid: #e1e0d9;
+    --hire: #2a78d6; --defer: #eb6834; --freeze: #1baf7a; --ctx: #898781; --flag: #d03b3b;
+    --band-hire: rgba(42,120,214,.07); --band-freeze: rgba(27,175,122,.09); --band-unknown: rgba(137,135,129,.10);
+    --tip-bg: #ffffff; --tip-border: #e1e0d9;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --surface: #1a1a19; --ink: #f0efec; --ink-2: #c3c2b7; --muted: #898781; --grid: #2c2c2a;
+      --hire: #3987e5; --defer: #d95926; --freeze: #199e70; --ctx: #898781; --flag: #e05454;
+      --band-hire: rgba(57,135,229,.10); --band-freeze: rgba(25,158,112,.13); --band-unknown: rgba(137,135,129,.12);
+      --tip-bg: #242423; --tip-border: #383835;
+    }
+  }
+  * { box-sizing: border-box; }
+  body { margin: 0; background: var(--surface); color: var(--ink);
+         font: 14px/1.45 -apple-system, BlinkMacSystemFont, "Segoe UI", Arial, sans-serif; }
+  main { max-width: 1120px; margin: 0 auto; padding: 28px 24px 36px; }
+  h1 { font-size: 20px; margin: 0 0 4px; font-weight: 650; }
+  .sub { color: var(--ink-2); margin: 0 0 14px; }
+  .legend { display: flex; gap: 18px; flex-wrap: wrap; color: var(--ink-2); font-size: 13px; margin-bottom: 8px; }
+  .legend span { display: inline-flex; align-items: center; gap: 6px; }
+  .dot { width: 11px; height: 11px; border-radius: 50%; display: inline-block; }
+  .ring { width: 15px; height: 15px; border-radius: 50%; display: inline-block; border: 2px solid var(--ink); background: var(--freeze); box-shadow: inset 0 0 0 2px var(--surface); }
+  .xmark { color: var(--flag); font-weight: 700; }
+  .chart { position: relative; }
+  svg { width: 100%; height: auto; display: block; overflow: visible; }
+  .lane-label { fill: var(--ink-2); font-size: 14px; font-weight: 600; }
+  .tick { fill: var(--muted); font-size: 12.5px; }
+  .gridline { stroke: var(--grid); stroke-width: 1; }
+  .band-label { font-size: 12.5px; font-weight: 650; }
+  .lbl { fill: var(--ink); font-size: 12.5px; }
+  .lbl.sub2 { fill: var(--ink-2); }
+  .leader { stroke: var(--muted); stroke-width: 1; }
+  .pt { cursor: default; transition: opacity .12s; }
+  .dim .pt { opacity: .25; } .dim .pt.on { opacity: 1; }
+  #tip { position: absolute; pointer-events: none; background: var(--tip-bg); border: 1px solid var(--tip-border);
+         border-radius: 8px; padding: 9px 11px; font-size: 12.5px; box-shadow: 0 4px 14px rgba(0,0,0,.12);
+         opacity: 0; transition: opacity .1s; max-width: 340px; z-index: 2; }
+  #tip b { display: block; margin-bottom: 2px; }
+  #tip .meta { color: var(--muted); margin-bottom: 6px; }
+  #tip q { display: block; color: var(--ink); margin-bottom: 6px; }
+  #tip .note { color: var(--ink-2); }
+  .facts { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; margin: 6px 0 14px; }
+  .fact { border: 1px solid var(--grid); border-radius: 8px; padding: 10px 12px; }
+  .fact .k { color: var(--muted); font-size: 12px; } .fact .v { font-weight: 650; font-size: 15px; }
+  .key { list-style: none; padding: 0; margin: 10px 0 0; display: grid; grid-template-columns: 1fr 1fr; gap: 6px 24px; font-size: 13px; color: var(--ink-2); }
+  .key li { display: flex; gap: 8px; align-items: baseline; }
+  .key .badge { flex: none; width: 18px; height: 18px; border-radius: 50%; background: var(--ink); color: var(--surface); font-size: 11px; display: inline-flex; align-items: center; justify-content: center; }
+  .key code { font-size: 12px; }
+  @media (max-width: 760px) { .key { grid-template-columns: 1fr; } }
+  .src { color: var(--muted); font-size: 12.5px; margin-top: 12px; }
+  details { margin-top: 14px; color: var(--ink-2); }
+  summary { cursor: pointer; }
+  table { border-collapse: collapse; margin-top: 8px; font-size: 12.5px; }
+  th, td { padding: 4px 12px 4px 0; text-align: left; border-bottom: 1px solid var(--grid); vertical-align: top; }
+  @media (max-width: 760px) { .facts { grid-template-columns: repeat(2, 1fr); } }
+</style>
+</head>
+<body>
+<main>
+  <h1>Sales hiring went from “approved” to frozen on June 10, and nothing has reversed it since</h1>
+  <p class="sub">Northwind Media · every Sales-hiring statement in Slack, leadership minutes and the roster, Apr 21 – Jun 17, 2026</p>
+  <div class="facts">
+    <div class="fact"><div class="k">Current state</div><div class="v">Frozen (REQ-114 paused)</div></div>
+    <div class="fact"><div class="k">Decision owner</div><div class="v">Dana Whitfield, CEO</div></div>
+    <div class="fact"><div class="k">Enforcer on reqs</div><div class="v">Priya Raman, CFO</div></div>
+    <div class="fact"><div class="k">Revisit</div><div class="v">July leadership sync</div></div>
+  </div>
+  <div class="legend" aria-hidden="true">
+    <span><i class="dot" style="background:var(--hire)"></i>Hire</span>
+    <span><i class="dot" style="background:var(--defer)"></i>Defer</span>
+    <span><i class="dot" style="background:var(--freeze)"></i>Freeze</span>
+    <span><i class="dot" style="background:transparent;border:2px solid var(--ctx)"></i>Context / open item</span>
+    <span><i class="ring"></i>Decision</span>
+    <span><span class="xmark">✕</span>Superseded</span>
+  </div>
+  <div class="chart" id="chart"><div id="tip" role="tooltip"></div></div>
+  <ol id="key" class="key"></ol>
+  <details>
+    <summary>Table view</summary>
+    <table id="tbl"><thead><tr><th>Date</th><th>Stance</th><th>Who</th><th>Statement (verbatim)</th><th>Source</th></tr></thead><tbody></tbody></table>
+  </details>
+  <p class="src">Sources: <code>slack_export.md</code>, <code>meeting_notes/leadership_sync_2026-06-11.md</code>, <code>headcount_roster.csv</code> — hover any dot for the verbatim line and its file:line. Same rows as <code>Sales_hiring_raw_data.xlsx</code>. Minutes and roster carry a date but no time.</p>
+</main>
+<script>
+const DATA = /*DATA*/[];
+const LANES = [["HIRE", "Hire", "var(--hire)"], ["DEFER", "Defer", "var(--defer)"], ["FREEZE", "Freeze", "var(--freeze)"], ["context", "Context / open", "var(--ctx)"]];
+const laneIx = Object.fromEntries(LANES.map((l, i) => [l[0], i]));
+const NS = "http://www.w3.org/2000/svg";
+const el = (t, a = {}, p) => { const e = document.createElementNS(NS, t); for (const k in a) e.setAttribute(k, a[k]); if (p) p.appendChild(e); return e; };
+const fmtDay = s => new Date(s + "T12:00").toLocaleDateString("en-GB", { weekday: "short", day: "numeric", month: "short" });
+const DECISION_DAY = "2026-06-10", ROSTER_DAY = "2026-05-01";
+
+// ordinal date columns (only days with statements) + one column for "after the bundle"
+const sorted = [...DATA].sort((a, b) => a.t.localeCompare(b.t) || a.line - b.line);
+const days = [...new Set(sorted.map(p => p.t.slice(0, 10)))];
+const cols = days.map(dy => ({ day: dy, pts: sorted.filter(p => p.t.startsWith(dy)) }));
+cols.push({ day: "after", pts: [] });
+const PAD = 22, STEP = 24, GAP = 46;
+cols.forEach(c => c.w = c.day === "after" ? 150 : Math.max(110, PAD * 2 + STEP * (c.pts.length - 1)));
+const M = { t: 70, r: 12, b: 64, l: 128 }, laneH = 78;
+let cx = M.l;
+cols.forEach((c, i) => { c.x0 = cx; cx += c.w + (i < cols.length - 1 ? GAP : 0); });
+const W = cx + M.r, H = M.t + laneH * LANES.length + M.b;
+const laneY = i => M.t + laneH * i + laneH / 2;
+const yTop = M.t - 6, yBot = M.t + laneH * LANES.length;
+
+const svg = el("svg", { viewBox: `0 0 ${W} ${H}`, role: "img",
+  "aria-label": "Timeline of Sales hiring statements by date. April 21: hire and defer. May 1: roster shows REQ-114 approved. June 10: CEO freezes Sales hiring; all later statements are freeze. After June 17: unknown, revisit at the July sync." });
+const defs = el("defs", {}, svg);
+const pat = el("pattern", { id: "unk", width: 7, height: 7, patternUnits: "userSpaceOnUse", patternTransform: "rotate(45)" }, defs);
+el("line", { x1: 0, y1: 0, x2: 0, y2: 7, stroke: "var(--muted)", "stroke-width": 1, opacity: .35 }, pat);
+
+// state bands (span columns + gaps)
+const stateOf = c => c.day === "after" ? "unknown" : c.day >= DECISION_DAY ? "frozen" : c.day >= ROSTER_DAY ? "approved" : "debate";
+const STATES = { debate: ["transparent", "Debate", "var(--ink-2)"], approved: ["var(--band-hire)", "Approved", "var(--hire)"],
+                 frozen: ["var(--band-freeze)", "FROZEN", "var(--ink)"], unknown: ["var(--band-unknown)", "After the bundle: unknown", "var(--muted)"] };
+let run = null;
+const runs = [];
+cols.forEach((c, i) => { const st = stateOf(c); if (!run || run.st !== st) { run = { st, x0: c.x0 - (i ? GAP / 2 : 0), x1: 0 }; runs.push(run); } run.x1 = c.x0 + c.w + (i < cols.length - 1 ? GAP / 2 : 0); });
+runs.forEach(r => {
+  const [fill, label, color] = STATES[r.st];
+  if (r.st === "unknown") el("rect", { x: r.x0, y: yTop, width: r.x1 - r.x0, height: yBot - yTop, fill: "url(#unk)" }, svg);
+  el("rect", { x: r.x0, y: yTop, width: r.x1 - r.x0, height: yBot - yTop, fill }, svg);
+  const t = el("text", { class: "band-label", x: r.x0 + 8, y: yTop - 12, fill: color }, svg); t.textContent = label;
+});
+
+// lanes
+LANES.forEach(([k, name], i) => {
+  el("line", { class: "gridline", x1: M.l - 6, x2: W - M.r, y1: laneY(i), y2: laneY(i) }, svg);
+  const t = el("text", { class: "lane-label", x: M.l - 16, y: laneY(i) + 5, "text-anchor": "end" }, svg); t.textContent = name;
+});
+
+// column headers (dates) + gap markers
+const dayMs = s => new Date(s + "T00:00").getTime();
+cols.forEach((c, i) => {
+  const mid = c.x0 + c.w / 2;
+  const t = el("text", { class: "tick", x: mid, y: yBot + 22, "text-anchor": "middle", "font-weight": c.day === DECISION_DAY ? 700 : 400,
+    fill: c.day === DECISION_DAY ? "var(--ink)" : "var(--muted)" }, svg);
+  t.textContent = c.day === "after" ? "Jun 18 → July" : fmtDay(c.day);
+  if (c.day === "after") { const t2 = el("text", { class: "tick", x: mid, y: yBot + 40, "text-anchor": "middle" }, svg); t2.textContent = "Revisit: July sync"; }
+  if (i < cols.length - 1) {
+    const nx = cols[i + 1];
+    const gd = nx.day === "after" ? null : Math.round((dayMs(nx.day) - dayMs(c.day)) / 864e5);
+    const gx = c.x0 + c.w + GAP / 2;
+    el("path", { d: `M${gx - 5},${yBot + 2} l4,-8 M${gx + 1},${yBot + 2} l4,-8`, stroke: "var(--muted)", "stroke-width": 1.2 }, svg);
+    if (gd && gd > 1) { const g = el("text", { class: "tick", x: gx, y: yBot + 22, "text-anchor": "middle", "font-size": 11 }, svg); g.textContent = `${gd}d`; }
+  }
+});
+// decision line at the first decision point
+const G = el("g", {}, svg);
+let num = 0;
+const keyRows = [];
+cols.forEach(c => c.pts.forEach((p, k) => {
+  p.cx = c.x0 + PAD + k * STEP + (c.pts.length === 1 ? c.w / 2 - PAD : 0);
+  p.li = laneIx[p.stance] ?? 3; p.cy = laneY(p.li);
+}));
+const firstDec = sorted.find(p => p.decision && p.stance === "FREEZE");
+el("line", { x1: firstDec.cx, x2: firstDec.cx, y1: yTop, y2: yBot, stroke: "var(--ink)", "stroke-width": 1.4, "stroke-dasharray": "4 3" }, svg);
+sorted.forEach(p => {
+  const color = LANES[p.li][2];
+  const g = el("g", { class: "pt" }, G);
+  if (p.decision) el("circle", { cx: p.cx, cy: p.cy, r: 10.5, fill: "var(--surface)", stroke: "var(--ink)", "stroke-width": 2 }, g);
+  el("circle", { cx: p.cx, cy: p.cy, r: p.decision ? 6.5 : 6, fill: p.stance === "context" ? "var(--surface)" : color,
+    stroke: p.stance === "context" ? color : "var(--surface)", "stroke-width": 2 }, g);
+  if (p.flag === "SUPERSEDED") { const s = 7;
+    el("path", { d: `M${p.cx - s},${p.cy - s}L${p.cx + s},${p.cy + s}M${p.cx + s},${p.cy - s}L${p.cx - s},${p.cy + s}`, stroke: "var(--flag)", "stroke-width": 2.4 }, g); }
+  if (p.label) {
+    num += 1; p.num = num; keyRows.push(p);
+    const by = p.cy - 22;
+    el("circle", { cx: p.cx, cy: by, r: 9, fill: "var(--ink)" }, g);
+    const t = el("text", { x: p.cx, y: by + 4, "text-anchor": "middle", "font-size": 11, "font-weight": 700, fill: "var(--surface)" }, g); t.textContent = num;
+  }
+  const hit = el("circle", { cx: p.cx, cy: p.cy, r: 13, fill: "transparent" }, g);
+  hit.addEventListener("mouseenter", () => show(p, g));
+  hit.addEventListener("mousemove", move);
+  hit.addEventListener("mouseleave", hide);
+});
+const key = document.getElementById("key");
+keyRows.forEach(p => { const li = document.createElement("li");
+  li.innerHTML = `<b class="badge">${p.num}</b><span><b>${p.label}</b> · ${fmtDay(p.t.slice(0, 10))} · <code>${p.file}:L${p.line}</code></span>`; key.appendChild(li); });
+const host = document.getElementById("chart"), tip = document.getElementById("tip");
+host.appendChild(svg);
+const esc = s => s.replace(/[&<>]/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;" }[c]));
+function show(p, g) {
+  G.classList.add("dim"); g.classList.add("on");
+  const when = fmtDay(p.t.slice(0, 10)) + (p.timed ? " " + p.t.slice(11) : "");
+  tip.innerHTML = `<b>${esc(p.who)}${p.decision ? " · DECISION" : ""}${p.flag === "SUPERSEDED" ? " · SUPERSEDED" : ""}</b>
+    <div class="meta">${when} · ${p.file}:L${p.line} · ${p.stance}</div><q>${esc(p.text)}</q><div class="note">${esc(p.note)}</div>`;
+  tip.style.opacity = 1;
+}
+function move(e) {
+  const r = host.getBoundingClientRect(); let lx = e.clientX - r.left + 14, ly = e.clientY - r.top + 14;
+  if (lx + tip.offsetWidth > r.width) lx = e.clientX - r.left - tip.offsetWidth - 14;
+  tip.style.left = lx + "px"; tip.style.top = ly + "px";
+}
+function hide() { tip.style.opacity = 0; G.classList.remove("dim"); G.querySelectorAll(".on").forEach(n => n.classList.remove("on")); }
+
+const tb = document.querySelector("#tbl tbody");
+DATA.forEach(p => { const tr = document.createElement("tr");
+  tr.innerHTML = `<td>${p.t.slice(0, 10)}${p.timed ? " " + p.t.slice(11) : ""}</td><td>${p.stance}${p.decision ? " (decision)" : ""}${p.flag === "SUPERSEDED" ? " — superseded" : ""}</td><td>${esc(p.who)}</td><td>${esc(p.text)}</td><td>${p.file}:L${p.line}</td>`;
+  tb.appendChild(tr); });
+</script>
+</body>
+</html>
