@@ -13,7 +13,7 @@ python -m unittest discover -s Analysis/tests -v   # acceptance tests (24)
 Ask anything: `python Analysis/ask.py "Are we still hiring AEs?"`. If no answerer fits, it says so instead of guessing. Run on a different copy of the data: `--data DIR` (ask) or `--tickets FILE` (autopilot).
 
 ## Decision
-**Tax-form chasing (W-9 / W-8) is the workflow that will be automated** — selected and confirmed 2026-10-28, after local testing. Cadence: e-sign request, reminders on day 3 and 7, hand-off to a person on day 14. Spec: `automation/TAXFORM_BUILDER_SPEC.md`.
+**Tax-form chasing (W-9 / W-8) is the workflow that will be automated** — selected and confirmed 2026-10-28, after local testing. Cadence: e-sign request, reminders on day 3 and 7, hand-off to a person on day 14. Spec: `automation/TAXFORM_BUILDER_SPEC.md`. Candidates and rationale: `DECISIONS.md` (D1).
 
 ## Deliverables
 | # | Deliverable | Where | Headline |
