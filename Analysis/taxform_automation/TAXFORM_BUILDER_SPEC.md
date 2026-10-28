@@ -6,7 +6,7 @@
 - **Biggest measured support category:** 36 tickets, **1,555 min (25.9 h) in Q1**, average 43 min, every ticket from a different creator (`support_tickets_q1_2026.csv`).
 - **Manual chasing, flagged twice by Ops:** "constant follow-up" (`slack_export.md` L171); "Manual every time. Anyone got a tool rec?" (L201).
 - **People has already pointed to the fix:** "e-sign + tax form services. Cheap" (L204).
-- **Why not reconciliation:** its 3 inputs aren't available; see `RECON_SCOPE.md`.
+- **Why not reconciliation:** its 3 inputs aren't available; see `Analysis/automation/RECON_SCOPE.md`.
 
 ## Result on the real data (Q1, 140 rows)
 | | Before (measured) | After (modelled) |
@@ -15,7 +15,7 @@
 | Manual chase threads | 36 | ~7 hand-offs |
 | Time cost per year @ $20/h | $2,073 | $798 |
 
-The service **breaks even below $1,275/year**. Sensitivity: **8.5–20.6 h saved per quarter** across hand-off rates of 10–50% and 5–15 minutes to check each returned form (`output/taxform/report.md`).
+The service **breaks even below $1,275/year**. Sensitivity: **8.5–20.6 h saved per quarter** across hand-off rates of 10–50% and 5–15 minutes to check each returned form (`Analysis/output/taxform/report.md`).
 
 ## Scope
 | In (v1) | Out (v1) |

@@ -54,7 +54,7 @@ Edit `Analysis\automation\taxform_config.json` (e.g. `"escalation_rate": 0.5`) a
 
 **Fresh-file drill**, most likely to be asked:
 ```powershell
-python Analysis\automation\taxform_chaser.py --tickets Analysis\walkthrough\fresh_tickets_practice.csv --out Analysis\output\practice
+python Analysis\automation\taxform_chaser.py --tickets Analysis\taxform_automation\fresh_tickets_practice.csv --out Analysis\output\practice
 type Analysis\output\practice\quarantine.csv
 ```
 **Expect:** 8 rows in, **3 quarantined** (duplicate TCK-2004, bad date 2026-04-31, minutes `abc`), 3 tax-form requests, 115 → 47 min.
