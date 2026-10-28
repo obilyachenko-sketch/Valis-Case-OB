@@ -170,3 +170,4 @@ Format for judgment calls: **JC-nn** — what looked wrong → what I decided �
 
 - **JC-48** — Found while building Q3: the value workbook's "worst case with automation" ($30,991) assumes *thumbnail* automation, but the selected automation is *tax forms*. With tax forms only, the worst case is ~0.49 FTE (~$21,400/yr). Slide quotes the plain floor ($20,129) instead. *Reason: keep Q3 consistent with the Q4 decision.*
 | 21:52 | Decision | **D2 recorded: value number = $41,600/yr support hire avoided (Medium confidence; floor $20,129).** `Analysis/DECISIONS.md` (index of D1 + D2). Worksheet and VALUE_NUMBER.md relabelled: the "with automation" scenario assumes thumbnails are automated too, which is not the selected automation (D1). |
+| 21:56 | Prompt | "I need the logs of this session to be pushed to github" → `Analysis/SESSION_LOG.md` (all 45 prompts as typed, outcome, commit). |

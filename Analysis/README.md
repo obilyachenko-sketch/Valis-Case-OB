@@ -15,7 +15,7 @@ Ask anything: `python Analysis/ask.py "Are we still hiring AEs?"`. If no answere
 ## Decision
 **Tax-form chasing (W-9 / W-8) is the workflow that will be automated** — selected and confirmed 2026-10-28, after local testing. Cadence: e-sign request, reminders on day 3 and 7, hand-off to a person on day 14. **Everything for it is in one folder: [`taxform_automation/`](taxform_automation/)** (spec, walkthrough, decision record, links to code and outputs).
 
-All decisions (D1 automation, D2 value number): [`DECISIONS.md`](DECISIONS.md).
+All decisions (D1 automation, D2 value number): [`DECISIONS.md`](DECISIONS.md). Session prompts and commits: [`SESSION_LOG.md`](SESSION_LOG.md); judgment calls: [`BUILD_LOG.md`](BUILD_LOG.md).
 
 ## Deliverables
 | # | Deliverable | Where | Headline |
