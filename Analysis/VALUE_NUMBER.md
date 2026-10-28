@@ -38,7 +38,7 @@ hire avoided               = 1 FTE requested - 0 incremental needed = $41,600 / 
 | "Tickets miss un-logged work" — assume true effort is 2× logged | 0.27 FTE | Yes — still < 0.5 FTE |
 | …or 3× logged | 0.41 FTE | Yes — still < 0.5 FTE |
 | How much work must be off-log for the 40 h/wk claim to be true? | tickets would capture only 14% of real effort | Implausible — needs evidence |
-| "Q1 is seasonal" | Q1 includes tax-form season (W-9/W-8 = 37% of minutes) → annualising Q1 *overstates* load | Yes — conservative |
+| "Q1 is seasonal" | W-9/W-8 = 37% of Q1 minutes, but tax forms follow new-creator onboarding (`slack_export.md:L171`) and Ops calls June "tax form season again" (`L201`) — Q1 is not shown to be a peak | Neutral — not evidence either way |
 | "Volume is growing" | monthly tickets: 2026-01 47 (24.1 h), 2026-02 43 (21.8 h), 2026-03 50 (24.7 h); at 2× volume = 0.27 FTE | Yes |
 | **"Ops says #47 thumbnail swaps in one week in May"** `slack_export.md:L193` (Liam Doyle, 2026-05-21 15:05) — Q1 averaged 4.8/week (10× more) | if every week were like that: 47 × 22 min + other categories 3.7 h = **20.6 h/week = 0.52 FTE** manual; **10.2 h/week = 0.26 FTE** with the autopilot | **Only with the autopilot.** This is the weakest point — see below |
 | "Average loaded cost ≠ support salary" | $41,600 is the company-wide average | Number moves with the real role cost; direction doesn't |

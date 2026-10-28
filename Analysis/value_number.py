@@ -119,7 +119,7 @@ def main() -> dict:
          f"| \"Tickets miss un-logged work\" — assume true effort is 2× logged | {stress[2]:.2f} FTE | Yes — still < 0.5 FTE |",
          f"| …or 3× logged | {stress[3]:.2f} FTE | Yes — still < 0.5 FTE |",
          f"| How much work must be off-log for the 40 h/wk claim to be true? | tickets would capture only {capture_breakeven:.0%} of real effort | Implausible — needs evidence |",
-         f"| \"Q1 is seasonal\" | Q1 includes tax-form season (W-9/W-8 = {by_cat['Tax form (W-9/W-8)'][1]/minutes:.0%} of minutes) → annualising Q1 *overstates* load | Yes — conservative |",
+         f"| \"Q1 is seasonal\" | W-9/W-8 = {by_cat['Tax form (W-9/W-8)'][1]/minutes:.0%} of Q1 minutes, but tax forms follow new-creator onboarding (`slack_export.md:L171`) and Ops calls June \"tax form season again\" (`L201`) — Q1 is not shown to be a peak | Neutral — not evidence either way |",
          f"| \"Volume is growing\" | monthly tickets: " + ", ".join(f"{k} {v[0]} ({v[1]/60:.1f} h)" for k, v in sorted(by_month.items())) +
          f"; at 2× volume = {stress[2]:.2f} FTE | Yes |",
          f"| **\"Ops says #{q2_thumbs} thumbnail swaps in one week in May\"** {q2.cite} — Q1 averaged {th_rate_q1:.1f}/week "

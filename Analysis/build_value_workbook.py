@@ -260,7 +260,7 @@ def main() -> Path:
         "Implausibly low without evidence of large off-ticket work")
     section(st, 8, "Seasonality and growth")
     put(st, 9, "Tax-form share of Q1 minutes (W-9/W-8 season)", f"=Breakdown!E{tax_row}", PCT, GREEN,
-        "Q1 contains tax-form season → annualising Q1 overstates load (conservative)")
+        "NOT a proven peak: tax forms come with new-creator onboarding (slack L171) and Ops calls June 'tax form season again' (L201). Treat as neutral.")
     put(st, 10, f"Hours, {months[0]}", f"=Breakdown!D{m_first}", H1, GREEN)
     put(st, 11, f"Hours, {months[-1]}", f"=Breakdown!D{m_last}", H1, GREEN)
     put(st, 12, "Change first → last month", "=B11/B10-1", PCT, BASE, "Flat to slightly up")

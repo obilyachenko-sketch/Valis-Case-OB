@@ -132,3 +132,8 @@ Format for judgment calls: **JC-nn** — what looked wrong → what I decided �
 - **JC-35** — TCK-1131–1140 are dated Jan–Mar but appended after the Mar 31 rows (235 min, 5.6%). Checked: 10 distinct creators with no earlier tickets → not duplicates; kept and flagged BACK-FILLED. *Reason: excluding them would understate measured load and flatter the number.*
 - **JC-36** — Worst-case bound is now exact from the workbook: **$20,129/yr** manual (0.516 FTE needed), **$30,991/yr** with automation (0.255 FTE). In chat I'd rounded it to ~$20,800 using 0.5 FTE. *Reason: the workbook formula is the source of truth.*
 - **JC-37** — "Incremental FTE needed = 0" is the one judgment input; it's a blue cell with a note showing the stricter alternative ((1 − 0.14) × cost). *Reason: a finance reviewer should be able to flip it and see the effect.*
+| 20:00 | Prompt | "look through the documents — are there discussions on potential automation and cost?" (tax forms + thumbnails) |
+| 20:03 | Correction | I had written "Q1 contains tax-form season → annualising Q1 overstates load (conservative)". Re-reading: tax forms come with new-creator onboarding (slack L171) and on Jun 4 Ops says "Tax form season again" (L201). Q1 is not shown to be a peak → changed to neutral in `VALUE_NUMBER.md` and the value workbook. |
+
+- **JC-38** — Seasonality removed as a supporting argument for the value number. *Reason: my claim wasn't backed by the data; the one direct statement (L201) points the other way.*
+- **JC-39** — No cost figure exists in the bundle for an e-sign/tax-form tool or a self-serve thumbnail build (only "Cheap", L204). Reported break-even budgets from time cost instead of inventing vendor prices.
