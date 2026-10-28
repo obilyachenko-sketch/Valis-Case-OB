@@ -156,3 +156,4 @@ Format for judgment calls: **JC-nn** — what looked wrong → what I decided �
 - **JC-44** — Deliverable 3 = tax-form chasing (user's choice, and the largest measured support category). The broader `support_autopilot.py` stays as the "also covers thumbnails" variant. *Reason: one workflow, end-to-end, on real rows.*
 - **JC-45** — "After" stays modelled (10 min to check a returned form; 20% handed to a person). The spec makes logging `form_returned_date` build step 2 so both get measured. *Reason: no return dates exist in the data; can't be measured yet.*
 - **JC-46** — No country in the ticket log → the chaser doesn't guess W-9 vs W-8BEN; the creator selects. *Reason: guessing a tax form type would be worse than asking.*
+| 20:35 | Decision | User confirmed: **tax-form chasing (W-9/W-8) is the flow that will be automated.** Recorded in README; pushed. |
