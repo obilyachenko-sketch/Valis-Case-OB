@@ -121,3 +121,8 @@ Format for judgment calls: **JC-nn** — what looked wrong → what I decided �
 
 - **JC-33** — Open non-Sales roles = union of roster (REQ-118/121/125) and People's May 1 list (adds the Creator Mgmt backfill) = 4; stated as a bound (5+ if Eng has "a couple", slack L217). Proposed Q3 roles listed but not counted. *Reason: the two "official" sources disagree; neither is complete.*
 | 19:19 | Rename | `Sales_hiring_raw_data.xlsx` → `Hiring raw data.xlsx` (builder + chart footer updated). |
+| 19:45 | Prompt | "pull Q2 support ticket data" |
+| 19:46 | Dead-end | No Q2 ticket data exists: searched the local folder, the repo and every Slack/notes mention. Only `support_tickets_q1_2026.csv`. Did not fabricate. |
+| 19:47 | Check | Q1 ticket IDs run TCK-1001…TCK-1140, so "#47" (slack L193) is not a ticket ID → most likely a count. Busiest Q1 week had 6 thumbnail tickets; 47/week would be ~8× that. Also: the last two rows are out of date order (TCK-1139 dated 03-04 after TCK-1138), so IDs aren't strictly chronological. |
+
+- **JC-34** — Value number stays at $41,600/yr, Medium confidence, with the 0.52-FTE worst case unchanged until Q2 tickets exist. *Reason: the one input that would settle it isn't in the bundle; inventing Q2 rows would make the number unfalsifiable.*
