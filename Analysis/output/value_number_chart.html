@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="utf-8"><title>Q3 value number — support load</title>
+<style>
+  body { margin: 0; background: #fcfcfb; color: #0b0b0b; font: 14px/1.45 -apple-system, "Segoe UI", Arial, sans-serif; }
+  main { width: 1040px; padding: 24px 28px 18px; }
+  h1 { font-size: 19px; font-weight: 650; margin: 0 0 3px; }
+  .sub { color: #52514e; margin: 0 0 12px; font-size: 13.5px; }
+  .legend { display: flex; gap: 20px; color: #52514e; font-size: 13px; margin-top: 4px; }
+  .legend span { display: inline-flex; align-items: center; gap: 6px; }
+  .sw { width: 13px; height: 13px; border-radius: 3px; display: inline-block; }
+  .src { color: #898781; font-size: 12px; margin-top: 8px; }
+  svg { display: block; }
+  .lab { font-size: 15px; fill: #0b0b0b; } .lab2 { font-size: 12.5px; fill: #52514e; }
+  .val { font-size: 15px; font-weight: 700; } .tick { font-size: 12px; fill: #898781; }
+</style></head><body><main>
+<h1>Creator support: 40 h/week claimed, 5.4 h/week measured, so a full-time hire isn't needed</h1>
+<p class="sub">Northwind Media · creator-support load in hours per week · 1 FTE = 40 h/week</p>
+<svg id="c" width="984" height="300" viewBox="0 0 984 300" role="img"
+  aria-label="Claimed 40 hours per week (1 FTE); measured 5.4 hours per week (0.14 FTE) from 140 Q1 tickets; worst case 20.6 hours per week (0.52 FTE) if the May spike were typical."></svg>
+<div class="legend">
+  <span><i class="sw" style="background:#e3e2dd;outline:1.5px dashed #52514e"></i>As claimed</span>
+  <span><i class="sw" style="background:#2a78d6"></i>Measured (ticket log)</span>
+  <span><i class="sw" style="background:repeating-linear-gradient(45deg,#d03b3b 0 3px,#e98a8a 3px 4.5px)"></i>Risk: unverified scenario</span>
+</div>
+<p class="src">Sources: claim slack_export.md L176, L188 · measured support_tickets_q1_2026.csv (140 rows, 4,230 min ÷ 60 ÷ 13 weeks) · spike slack_export.md L193 ("#47 this week"; Q1 busiest week had 6) · worksheet: Value number raw data.xlsx</p>
+</main>
+<script>
+const NS="http://www.w3.org/2000/svg", svg=document.getElementById("c");
+const el=(t,a,p=svg)=>{const e=document.createElementNS(NS,t);for(const k in a)e.setAttribute(k,a[k]);p.appendChild(e);return e};
+const defs=el("defs",{}); const pat=el("pattern",{id:"h",width:6,height:6,patternUnits:"userSpaceOnUse",patternTransform:"rotate(45)"},defs);
+el("rect",{width:6,height:6,fill:"#d03b3b"},pat); el("line",{x1:0,y1:0,x2:0,y2:6,stroke:"rgba(255,255,255,.5)","stroke-width":1.8},pat);
+const L=320, R=900, max=45, x=v=>L+(v/max)*(R-L);
+const rows=[
+ {lab:"Claimed by Ops (May)", sub:"'easily 40 hrs/week' (slack L176)", v:40, fte:"1.00 FTE", fill:"#e3e2dd", dash:true},
+ {lab:"Measured, Q1 tickets", sub:"140 tickets · 70.5 h per quarter", v:5.42, fte:"0.14 FTE", fill:"#2a78d6"},
+ {lab:"Worst case: May spike is typical", sub:"47 thumbnail swaps/week vs Q1 max of 6", v:20.65, fte:"0.52 FTE", fill:"url(#h)"}];
+for(let t=0;t<=40;t+=10){el("line",{x1:x(t),x2:x(t),y1:16,y2:262,stroke:"#e1e0d9"});const tx=el("text",{class:"tick",x:x(t),y:282,"text-anchor":"middle"});tx.textContent=t+" h";}
+el("line",{x1:x(40),x2:x(40),y1:8,y2:262,stroke:"#0b0b0b","stroke-width":1.5,"stroke-dasharray":"5 4"});
+const ft=el("text",{class:"lab2",x:x(40)+6,y:20}); ft.textContent="1 FTE";
+rows.forEach((r,i)=>{const y=34+i*80,h=40;
+ const t1=el("text",{class:"lab",x:0,y:y+17}); t1.textContent=r.lab;
+ const t2=el("text",{class:"lab2",x:0,y:y+36}); t2.textContent=r.sub;
+ const b=el("rect",{x:L,y,width:x(r.v)-L,height:h,rx:4,fill:r.fill});
+ if(r.dash){b.setAttribute("stroke","#52514e");b.setAttribute("stroke-width",1.5);b.setAttribute("stroke-dasharray","5 4");}
+ const v=el("text",{class:"val",x:x(r.v)+10,y:y+26}); v.textContent=r.v.toFixed(1)+" h/week · "+r.fte;
+ if(r.dash){v.setAttribute("x",x(r.v)-10);v.setAttribute("text-anchor","end");}
+ if(r.fill==="url(#h)")v.setAttribute("fill","#d03b3b");});
+</script></body></html>
