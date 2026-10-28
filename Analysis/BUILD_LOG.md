@@ -120,3 +120,4 @@ Format for judgment calls: **JC-nn** — what looked wrong → what I decided �
 | 19:21 | Files | `Sales_hiring_raw_data.xlsx` + tab "Other open roles": REQ-118/121/125, Creator Mgmt backfill, 2 proposed Q3 roles; raw source text verbatim; 5 COUNTIFS formulas; Conflict C5 added; Summary row added. Recalc: 0 errors. |
 
 - **JC-33** — Open non-Sales roles = union of roster (REQ-118/121/125) and People's May 1 list (adds the Creator Mgmt backfill) = 4; stated as a bound (5+ if Eng has "a couple", slack L217). Proposed Q3 roles listed but not counted. *Reason: the two "official" sources disagree; neither is complete.*
+| 19:19 | Rename | `Sales_hiring_raw_data.xlsx` → `Hiring raw data.xlsx` (builder + chart footer updated). |

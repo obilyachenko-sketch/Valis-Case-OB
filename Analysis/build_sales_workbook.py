@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Build Analysis/output/Sales_hiring_raw_data.xlsx — every Sales-hiring statement, verbatim, with source line.
+"""Build "Analysis/output/Hiring raw data.xlsx" — every Sales-hiring statement, verbatim, with source line.
 Usage: python Analysis/build_sales_workbook.py
 """
 from __future__ import annotations
@@ -311,7 +311,7 @@ def main() -> Path:
     s["A20"] = "Scope: Sales headcount decisions, 2026-04-21 → 2026-06-17 (full bundle). Anything after the last message is unknown."
     s["A20"].font = Font(name=F, size=9, italic=True)
 
-    out = A / "output" / "Sales_hiring_raw_data.xlsx"
+    out = A / "output" / "Hiring raw data.xlsx"
     wb.save(out)
     print(out)
     return out
