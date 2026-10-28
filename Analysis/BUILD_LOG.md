@@ -99,3 +99,9 @@ Format for judgment calls: **JC-nn** — what looked wrong → what I decided �
 | 18:06 | Files | Waterfall redrafted: Booked $81,000 → −$7,500 duplicate (red, hatched) → Correct spend $73,500 → 14 vendors deducted, sorted high→low, closing at $0 (checked in code; warns if it doesn't). Fixed label collision at the top-left and clipped axis labels. |
 | 18:07 | Prompt | "make 81 dashed grey. 73 blue as the rest of software. All titles vertical and bigger font" |
 | 18:09 | Files | Booked $81,000 → light-grey fill with dashed grey outline; Correct spend $73,500 → same blue as vendors; x-axis labels vertical at 15px (was 12px, −38°). Legend updated to match. |
+| 18:41 | Prompt | "yes, create spreadsheet" (Q2 Sales hiring, same treatment as Q1) |
+| 18:45 | Files | `build_sales_workbook.py` → `output/Sales_hiring_raw_data.xlsx`: Summary (6 live formulas, recalculated, 0 errors), Timeline (24 statements, verbatim text pulled by line number, stance + commentary), Roster reqs (raw), Conflicts C1–C4, Open actions. |
+
+- **JC-28** — Rows from the minutes and roster carry a date but no time; shown date-only with a cell note rather than a fake 00:00. *Reason: don't imply precision the source doesn't have.*
+- **JC-29** — Tomás's "putting my objection on record" (slack L73) is classed FREEZE (complying), not HIRE. *Reason: he accepts the decision; dissent isn't a reversal.*
+- **JC-30** — Revisit timing has three wordings (Q2 review / when pipeline recovers / July sync with a trigger) → logged as C3, minutes taken as most specific. *Reason: compatible, not contradictory.*
