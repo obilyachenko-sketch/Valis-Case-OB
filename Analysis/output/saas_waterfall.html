@@ -57,43 +57,51 @@
 </head>
 <body>
 <main>
-  <h1>Q1 2026 SaaS spend builds to $81,000 — $7,500 of it is a likely duplicate</h1>
-  <p class="sub">Northwind Media · Software &amp; SaaS line items, Q1 2026 (USD), in P&amp;L order</p>
+  <h1>Q1 2026 SaaS: $81,000 booked, $73,500 after removing the Amplitude duplicate</h1>
+  <p class="sub">Northwind Media · Software &amp; SaaS, Q1 2026 (USD) · correct spend broken down by vendor, highest to lowest</p>
   <div class="legend" aria-hidden="true">
-    <span><i class="sw" style="background:var(--bar)"></i>Line item</span>
-    <span><i class="sw hatch"></i>⚠ Suspected duplicate (Amplitude Analytics)</span>
-    <span><i class="sw" style="background:var(--total)"></i>Subtotal as listed</span>
-    <span><i class="sw dash"></i>Total without duplicate</span>
+    <span><i class="sw" style="background:var(--total)"></i>Total</span>
+    <span><i class="sw hatch"></i>⚠ Suspected duplicate, removed (Amplitude Analytics)</span>
+    <span><i class="sw" style="background:var(--bar)"></i>Vendor (deducted from correct spend)</span>
   </div>
   <div class="chart" id="chart"><div id="tip" role="tooltip"></div></div>
   <div class="callout">
     <b>⚠ Amplitude Analytics ($7,500)</b> has the same amount and description ("Product analytics") as the Amplitude line.
     Finance flagged it as a likely double-count, but the invoice hasn't been checked
-    (<code>slack_export.md</code> L147, L150, L153). Without it, Q1 SaaS spend is <b>$73,500</b>.
+    (<code>slack_export.md</code> L147, L150, L153). Removing it gives the <b>$73,500</b> correct spend shown in the third column.
   </div>
   <details>
     <summary>Table view</summary>
-    <table id="tbl"><thead><tr><th>Vendor</th><th class="n">Q1 USD</th><th class="n">Running total</th><th>Source</th></tr></thead><tbody></tbody></table>
+    <table id="tbl"><thead><tr><th>Step</th><th class="n">Q1 USD</th><th class="n">Level after step</th><th>Source</th></tr></thead><tbody></tbody></table>
   </details>
-  <p class="src">Source: <code>pnl_q1_2026.csv</code> L9–L24 (line items and listed subtotal); values as provided. Recomputed sum = $81,000 = listed subtotal.</p>
+  <p class="src">Source: <code>pnl_q1_2026.csv</code> L9–L24 (line items and listed subtotal); values as provided. Recomputed sum = $81,000 = listed subtotal. The 14 remaining vendors sum to $73,500, so the waterfall closes at $0.</p>
 </main>
 <script>
-const DATA = [
+const ITEMS = [
   ["Salesforce", 12000, 9], ["HubSpot", 9000, 10], ["Looker", 11000, 11], ["Amplitude", 7500, 12],
   ["Amplitude Analytics", 7500, 13, true], ["Figma", 3600, 14], ["Adobe Creative Cloud", 5400, 15],
   ["Notion", 2400, 16], ["Slack", 4200, 17], ["Google Workspace", 6000, 18], ["Zoom", 1800, 19],
   ["GitHub", 3000, 20], ["Sentry", 1500, 21], ["Greenhouse", 4000, 22], ["Airtable", 2100, 23]
 ];
 const LISTED = 81000;
-const fmt = v => "$" + v.toLocaleString("en-US");
+const fmt = v => (v < 0 ? "−$" : "$") + Math.abs(v).toLocaleString("en-US");
 const fmtK = v => v === 0 ? "$0" : "$" + (v / 1000) + "k";
 
-let run = 0;
-const bars = DATA.map(([name, v, line, dup]) => { const b = { name, v, line, dup: !!dup, y0: run, y1: run + v, kind: dup ? "dup" : "item" }; run += v; return b; });
-bars.push({ name: "Subtotal (as listed)", v: LISTED, line: 24, y0: 0, y1: LISTED, kind: "total" });
-if (run !== LISTED) console.warn("Sum", run, "≠ listed", LISTED);
+const sum = ITEMS.reduce((t, d) => t + d[1], 0);
+if (sum !== LISTED) console.warn("Sum", sum, "≠ listed", LISTED);
+const dups = ITEMS.filter(d => d[3]);
+const dupTotal = dups.reduce((t, d) => t + d[1], 0);
+const correct = LISTED - dupTotal;
+const bars = [{ name: "Booked (P&L)", v: LISTED, line: 24, y0: 0, y1: LISTED, kind: "total" }];
+dups.forEach(([name, v, line]) => bars.push({ name: name, v: -v, line, y0: LISTED - v, y1: LISTED, kind: "dup" }));
+bars.push({ name: "Correct spend", v: correct, line: null, y0: 0, y1: correct, kind: "total2" });
+let run = correct;
+ITEMS.filter(d => !d[3]).sort((a, b) => b[1] - a[1] || a[0].localeCompare(b[0])).forEach(([name, v, line]) => {
+  bars.push({ name, v: -v, line, y0: run - v, y1: run, kind: "item", after: run - v }); run -= v;
+});
+if (run !== 0) console.warn("Waterfall does not close to 0:", run);
 
-const W = 1032, H = 470, M = { t: 34, r: 150, b: 96, l: 56 };
+const W = 1032, H = 470, M = { t: 34, r: 16, b: 110, l: 56 };
 const iw = W - M.l - M.r, ih = H - M.t - M.b;
 const yMax = 90000, y = v => M.t + ih - (v / yMax) * ih;
 const step = iw / bars.length, bw = Math.min(40, step - 10);
@@ -102,7 +110,7 @@ const NS = "http://www.w3.org/2000/svg";
 const el = (t, a = {}, p) => { const e = document.createElementNS(NS, t); for (const k in a) e.setAttribute(k, a[k]); if (p) p.appendChild(e); return e; };
 
 const svg = el("svg", { viewBox: `0 0 ${W} ${H}`, role: "img",
-  "aria-label": "Waterfall of Q1 2026 SaaS spend: 15 line items sum to $81,000; Amplitude Analytics, $7,500, is highlighted as a suspected duplicate." });
+  "aria-label": "Waterfall: $81,000 booked SaaS spend, minus $7,500 suspected Amplitude Analytics duplicate, equals $73,500 correct spend, then broken down by vendor from Salesforce $12,000 down to Sentry $1,500." });
 const defs = el("defs", {}, svg);
 const pat = el("pattern", { id: "hatch", width: 6, height: 6, patternUnits: "userSpaceOnUse", patternTransform: "rotate(45)" }, defs);
 el("rect", { width: 6, height: 6, fill: "var(--dup)" }, pat);
@@ -115,31 +123,27 @@ for (let v = 0; v <= yMax; v += 15000) {
   el("text", { x: M.l - 8, y: y(v) + 4, "text-anchor": "end" }, g).textContent = fmtK(v);
 }
 
-// reference line: total without duplicate
-const without = LISTED - bars.filter(b => b.dup).reduce((s, b) => s + b.v, 0);
-el("line", { class: "ref", x1: x(bars.length - 1) - 6, x2: x(bars.length - 1) + bw + 10, y1: y(without), y2: y(without) }, svg);
-const an = el("text", { class: "anno", x: x(bars.length - 1) + bw + 14, y: y(without) - 2 }, svg);
-el("tspan", { x: x(bars.length - 1) + bw + 14, dy: 0 }, an).textContent = "Without duplicate:";
-const t2 = el("tspan", { x: x(bars.length - 1) + bw + 14, dy: 15, "font-weight": 650, fill: "var(--dup)" }, an); t2.textContent = fmt(without);
-
 const G = el("g", { id: "bars" }, svg);
 bars.forEach((b, i) => {
   const top = y(b.y1), bot = y(b.y0), h = Math.max(1, bot - top);
   // connector to next bar
-  if (i < bars.length - 1) el("line", { class: "conn", x1: x(i) + bw, x2: x(i + 1), y1: top, y2: top }, G);
-  const fill = b.kind === "dup" ? "url(#hatch)" : b.kind === "total" ? "var(--total)" : "var(--bar)";
+  if (i < bars.length - 1) { const nb = bars[i + 1];
+    const lv = nb.kind === "dup" ? b.y1 : nb.kind === "total2" ? (b.kind === "dup" ? b.y0 : b.y1) : (b.kind === "item" ? b.y0 : b.y1);
+    el("line", { class: "conn", x1: x(i) + bw, x2: x(i + 1), y1: y(lv), y2: y(lv) }, G); }
+  const fill = b.kind === "dup" ? "url(#hatch)" : b.kind.startsWith("total") ? "var(--total)" : "var(--bar)";
   const r = el("rect", { class: "bar", x: x(i), y: top, width: bw, height: h, rx: 3, fill }, G);
   if (b.kind === "dup") el("rect", { x: x(i) - 1.5, y: top - 1.5, width: bw + 3, height: h + 3, rx: 4, fill: "none", stroke: "var(--dup)", "stroke-width": 1.5 }, G);
   b.rect = r;
   // labels: value above each bar (short), bold on dup + total
-  const lab = el("text", { class: "val" + (b.kind !== "item" ? " strong" : ""), x: x(i) + bw / 2, y: top - 6, "text-anchor": "middle" }, G);
-  lab.textContent = b.kind === "total" ? fmt(b.v) : (b.kind === "dup" ? "⚠ +" + fmtK(b.v) : "+" + fmtK(b.v));
-  if (b.kind === "dup") lab.setAttribute("fill", "var(--dup)");
+  const lab = el("text", { class: "val" + (b.kind !== "item" ? " strong" : ""), x: x(i) + bw / 2,
+    y: b.kind === "dup" ? bot + 16 : top - 6, "text-anchor": "middle" }, G);
+  lab.textContent = b.kind.startsWith("total") ? fmt(b.v) : (b.kind === "dup" ? "⚠ −" + fmtK(-b.v) : "−" + fmtK(-b.v));
+  if (b.kind === "dup") lab.style.fill = "var(--dup)";
   // x label
   const tx = el("text", { class: "xlab", transform: `translate(${x(i) + bw / 2},${M.t + ih + 14}) rotate(-38)`, "text-anchor": "end" }, svg);
   tx.textContent = b.name;
   if (b.kind === "dup") { tx.setAttribute("fill", "var(--dup)"); tx.setAttribute("font-weight", "650"); }
-  if (b.kind === "total") { tx.setAttribute("fill", "var(--ink)"); tx.setAttribute("font-weight", "650"); }
+  if (b.kind.startsWith("total")) { tx.setAttribute("fill", "var(--ink)"); tx.setAttribute("font-weight", "650"); }
   // hit target (full column)
   const hit = el("rect", { class: "hit", x: M.l + i * step, y: M.t, width: step, height: ih }, svg);
   hit.addEventListener("mouseenter", e => show(b, i));
@@ -152,11 +156,16 @@ const host = document.getElementById("chart"), tip = document.getElementById("ti
 host.appendChild(svg);
 function show(b) {
   G.parentNode.classList.add("dim"); b.rect.classList.add("on");
-  const note = b.kind === "dup" ? `<div class="note">⚠ Same amount &amp; description as “Amplitude” (L12). Flagged as likely double-count; invoice unconfirmed (slack L147, L150, L153).</div>`
-    : b.kind === "total" ? `<div class="note">Recomputed sum of L9–L23 = ${fmt(run)} — ties. Without the duplicate: ${fmt(without)}.</div>` : "";
-  tip.innerHTML = `<b>${b.name}</b>` + (b.kind === "total" ? `<div class="row"><span>Subtotal</span><span>${fmt(b.v)}</span></div>`
-    : `<div class="row"><span>Q1 spend</span><span>${fmt(b.v)}</span></div><div class="row"><span>Running total</span><span>${fmt(b.y1)}</span></div>`)
-    + `<div class="row"><span>Source</span><span>pnl_q1_2026.csv L${b.line}</span></div>` + note;
+  const src = b.line ? `pnl_q1_2026.csv L${b.line}` : "Booked − duplicate";
+  let rows = "", note = "";
+  if (b.kind === "total") { rows = `<div class="row"><span>Booked</span><span>${fmt(b.v)}</span></div>`;
+    note = `<div class="note">Listed subtotal; recomputed sum of L9–L23 = ${fmt(sum)} — ties.</div>`; }
+  else if (b.kind === "dup") { rows = `<div class="row"><span>Removed</span><span>${fmt(b.v)}</span></div>`;
+    note = `<div class="note">⚠ Same amount &amp; description as “Amplitude” (L12). Flagged as likely double-count; invoice unconfirmed (slack L147, L150, L153).</div>`; }
+  else if (b.kind === "total2") { rows = `<div class="row"><span>Correct spend</span><span>${fmt(b.v)}</span></div>`;
+    note = `<div class="note">${fmt(LISTED)} − ${fmt(dupTotal)}. Medium confidence until the Amplitude invoice is checked.</div>`; }
+  else { rows = `<div class="row"><span>Q1 spend</span><span>${fmt(-b.v)}</span></div><div class="row"><span>Share of correct spend</span><span>${(-b.v / correct * 100).toFixed(1)}%</span></div><div class="row"><span>Remaining after</span><span>${fmt(b.after)}</span></div>`; }
+  tip.innerHTML = `<b>${b.name}</b>` + rows + `<div class="row"><span>Source</span><span>${src}</span></div>` + note;
   tip.style.opacity = 1;
 }
 function move(e) {
@@ -168,7 +177,8 @@ function hide() { tip.style.opacity = 0; G.parentNode.classList.remove("dim"); b
 
 const tb = document.querySelector("#tbl tbody");
 bars.forEach(b => { const tr = document.createElement("tr"); if (b.kind === "dup") tr.className = "dup";
-  tr.innerHTML = `<td>${b.kind === "dup" ? "⚠ " : ""}${b.name}</td><td class="n">${fmt(b.v)}</td><td class="n">${fmt(b.y1)}</td><td>pnl_q1_2026.csv L${b.line}</td>`; tb.appendChild(tr); });
+  const lvl = b.kind.startsWith("total") ? b.y1 : b.kind === "dup" ? b.y0 : b.after;
+  tr.innerHTML = `<td>${b.kind === "dup" ? "⚠ " : ""}${b.name}</td><td class="n">${fmt(b.v)}</td><td class="n">${fmt(lvl)}</td><td>${b.line ? "pnl_q1_2026.csv L" + b.line : "computed"}</td>`; tb.appendChild(tr); });
 </script>
 </body>
 </html>
