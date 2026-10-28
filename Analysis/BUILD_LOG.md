@@ -126,3 +126,9 @@ Format for judgment calls: **JC-nn** — what looked wrong → what I decided �
 | 19:47 | Check | Q1 ticket IDs run TCK-1001…TCK-1140, so "#47" (slack L193) is not a ticket ID → most likely a count. Busiest Q1 week had 6 thumbnail tickets; 47/week would be ~8× that. Also: the last two rows are out of date order (TCK-1139 dated 03-04 after TCK-1138), so IDs aren't strictly chronological. |
 
 - **JC-34** — Value number stays at $41,600/yr, Medium confidence, with the 0.52-FTE worst case unchanged until Q2 tickets exist. *Reason: the one input that would settle it isn't in the bundle; inventing Q2 rows would make the number unfalsifiable.*
+| 19:49 | Prompt | "build me excel for this case" (value number) — user confirmed no new material in local CEO_CONTEXT.md. |
+| 19:55 | Files | `build_value_workbook.py` → `output/Value number raw data.xlsx`: Summary (inputs → measured load → unit cost → $41,600, bounds), Stress tests (incl. '#47' scenario), Tickets (raw, all 140 rows + month/ISO-week formulas), Breakdown (COUNTIFS/SUMIFS), Sources (verbatim), Cannot verify, Alternatives. 378 formulas, recalc 0 errors (after fixing one text cell that began with "="). |
+
+- **JC-35** — TCK-1131–1140 are dated Jan–Mar but appended after the Mar 31 rows (235 min, 5.6%). Checked: 10 distinct creators with no earlier tickets → not duplicates; kept and flagged BACK-FILLED. *Reason: excluding them would understate measured load and flatter the number.*
+- **JC-36** — Worst-case bound is now exact from the workbook: **$20,129/yr** manual (0.516 FTE needed), **$30,991/yr** with automation (0.255 FTE). In chat I'd rounded it to ~$20,800 using 0.5 FTE. *Reason: the workbook formula is the source of truth.*
+- **JC-37** — "Incremental FTE needed = 0" is the one judgment input; it's a blue cell with a note showing the stricter alternative ((1 − 0.14) × cost). *Reason: a finance reviewer should be able to flip it and see the effect.*
