@@ -40,7 +40,7 @@ hire avoided               = 1 FTE requested - 0 incremental needed = $41,600 / 
 | How much work must be off-log for the 40 h/wk claim to be true? | tickets would capture only 14% of real effort | Implausible — needs evidence |
 | "Q1 is seasonal" | W-9/W-8 = 37% of Q1 minutes, but tax forms follow new-creator onboarding (`slack_export.md:L171`) and Ops calls June "tax form season again" (`L201`) — Q1 is not shown to be a peak | Neutral — not evidence either way |
 | "Volume is growing" | monthly tickets: 2026-01 47 (24.1 h), 2026-02 43 (21.8 h), 2026-03 50 (24.7 h); at 2× volume = 0.27 FTE | Yes |
-| **"Ops says #47 thumbnail swaps in one week in May"** `slack_export.md:L193` (Liam Doyle, 2026-05-21 15:05) — Q1 averaged 4.8/week (10× more) | if every week were like that: 47 × 22 min + other categories 3.7 h = **20.6 h/week = 0.52 FTE** manual; **10.2 h/week = 0.26 FTE** with the autopilot | **Only with the autopilot.** This is the weakest point — see below |
+| **"Ops says #47 thumbnail swaps in one week in May"** `slack_export.md:L193` (Liam Doyle, 2026-05-21 15:05) — Q1 averaged 4.8/week (10× more) | if every week were like that: 47 × 22 min + other categories 3.7 h = **20.6 h/week = 0.52 FTE** manual; **10.2 h/week = 0.26 FTE** if thumbnail swaps were also automated (not the selected automation — see D1) | **Floor = manual case.** This is the weakest point — see below |
 | "Average loaded cost ≠ support salary" | $41,600 is the company-wide average | Number moves with the real role cost; direction doesn't |
 
 ## Source rows by category
@@ -65,6 +65,6 @@ The support autopilot cuts the remaining load from 70.5 h to 40.6 h per quarter 
 - **Off-ticket effort.** Chasing done by email or DM outside the ticketing tool isn't in `Handle_Minutes`. Stress-tested above, not measured.
 - **How `Handle_Minutes` is captured** (timer vs. self-reported estimate). All values are multiples of 5 between 10 and 55, which suggests estimates.
 - **The role's actual loaded cost.** Only the company-wide average is available. P&L says "~300 FTE" while the roster says exactly 300.
-- **Q2 volume — the biggest risk to this number.** Only Q1 tickets are in the bundle; Ops' 40 h claim is from May. If "#47 this week" `slack_export.md:L193` (Liam Doyle, 2026-05-21 15:05) is a weekly count and typical, manual load is ~21 h/week — about half the 40 h claim, but over 0.5 FTE. Then the number holds **only if the autopilot ships** (load drops to ~10 h/week). It may also be a one-off spike or a running ticket number. **Pull Q2 tickets before booking it** — the same script re-runs on them unchanged.
+- **Q2 volume — the biggest risk to this number.** Only Q1 tickets are in the bundle; Ops' 40 h claim is from May. If "#47 this week" `slack_export.md:L193` (Liam Doyle, 2026-05-21 15:05) is a weekly count and typical, manual load is ~21 h/week — about half the 40 h claim, but over 0.5 FTE. Then the value falls to the manual floor (about half a person still avoided). The selected automation is tax forms (D1); only automating thumbnails too would bring the load to ~10 h/week. It may also be a one-off spike or a running ticket number. **Pull Q2 tickets before booking it** — the same script re-runs on them unchanged.
 - **Hours spent on non-creator support** (if any) that Ops counts in its 40 h.
 

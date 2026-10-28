@@ -125,8 +125,8 @@ def main() -> dict:
          f"| **\"Ops says #{q2_thumbs} thumbnail swaps in one week in May\"** {q2.cite} — Q1 averaged {th_rate_q1:.1f}/week "
          f"({q2_thumbs/th_rate_q1:.0f}× more) | if every week were like that: {q2_thumbs} × {th_avg:.0f} min + other categories "
          f"{other_hpw:.1f} h = **{worst_hpw:.1f} h/week = {worst_hpw/FTE_HOURS_PER_WEEK:.2f} FTE** manual; "
-         f"**{worst_auto_hpw:.1f} h/week = {worst_auto_hpw/FTE_HOURS_PER_WEEK:.2f} FTE** with the autopilot | "
-         f"**Only with the autopilot.** This is the weakest point — see below |",
+         f"**{worst_auto_hpw:.1f} h/week = {worst_auto_hpw/FTE_HOURS_PER_WEEK:.2f} FTE** if thumbnail swaps were also automated (not the selected automation — see D1) | "
+         f"**Floor = manual case.** This is the weakest point — see below |",
          f"| \"Average loaded cost ≠ support salary\" | ${cost_fte_y:,.0f} is the company-wide average | Number moves with the real role cost; direction doesn't |", "",
          "## Source rows by category", "",
          "| Category | Tickets | Minutes | Hours | Source lines |", "|---|---:|---:|---:|---|"]
@@ -147,8 +147,9 @@ def main() -> dict:
           "- **The role's actual loaded cost.** Only the company-wide average is available. P&L says \"~300 FTE\" while the roster says exactly 300.",
           f"- **Q2 volume — the biggest risk to this number.** Only Q1 tickets are in the bundle; Ops' 40 h claim is from May. "
           f"If \"#{q2_thumbs} this week\" {q2.cite} is a weekly count and typical, manual load is ~{worst_hpw:.0f} h/week — about half the 40 h "
-          f"claim, but over 0.5 FTE. Then the number holds **only if the autopilot ships** (load drops to "
-          f"~{worst_auto_hpw:.0f} h/week). It may also be a one-off spike or a running ticket number. **Pull Q2 tickets before booking it** — "
+          f"claim, but over 0.5 FTE. Then the value falls to the manual floor (about half a person still avoided). The selected automation "
+          f"is tax forms (D1); only automating thumbnails too would bring the load to ~{worst_auto_hpw:.0f} h/week. "
+          f"It may also be a one-off spike or a running ticket number. **Pull Q2 tickets before booking it** — "
           "the same script re-runs on them unchanged.",
           "- **Hours spent on non-creator support** (if any) that Ops counts in its 40 h.", ""]
     L.insert(L.index("## Baseline"), f"**Confidence: Medium.** High on Q1 (every row measured); open on Q2 volume — see the "

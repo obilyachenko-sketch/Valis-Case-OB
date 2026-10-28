@@ -239,8 +239,9 @@ def main() -> Path:
     section(s, 30, "Bounds (worst case: Ops' '#47 this week' is typical for Q2)")
     put(s, 31, "Worst case — FTE needed, manual", "='Stress tests'!B21", H2, GREEN)
     put(s, 32, "Worst case — value per year, manual", "=MAX(0,B6-B31)*B23", USD, BOLD, "Half a person still avoided")
-    put(s, 33, "Worst case — FTE needed, with support automation", "='Stress tests'!B23", H2, GREEN)
-    put(s, 34, "Worst case — value per year, with automation", "=MAX(0,B6-B33)*B23", USD, BOLD)
+    put(s, 33, "Worst case — FTE needed, IF thumbnail swaps were also automated (not selected)", "='Stress tests'!B23", H2, GREEN,
+        "Scenario only. The selected automation is tax forms (D1), which doesn't touch thumbnails; the headline floor is B32.")
+    put(s, 34, "Worst case — value per year, IF thumbnails automated (not selected)", "=MAX(0,B6-B33)*B23", USD, BOLD)
     s["A36"] = ('="Answer: "&TEXT(B27,"$#,##0")&" per year — support hire avoided. Measured load "&TEXT(B17,"0.0")&" h/week ("'
                 '&TEXT(B18,"0.00")&" FTE) vs "&B5&" h/week claimed. Range "&TEXT(B32,"$#,##0")&" – "&TEXT(B27,"$#,##0")&"."')
     s["A36"].font = BOLD
@@ -277,7 +278,7 @@ def main() -> Path:
     st["D18"].font = BOLD
     put(st, 22, "Automation fallback rate (assumption)", ap["fallback_rate"], PCT, BLUE,
         "Analysis/automation/playbooks.json — share of deflected tickets still needing a person")
-    put(st, 23, "Worst case — FTE needed, with support automation",
+    put(st, 23, "Worst case — FTE needed, IF thumbnails automated (not selected)",
         f"=(B16*((1-B22)*B24+B22*B19)/60+B20)/Summary!B8", H2, BOLD, "Thumbnails deflected to self-serve; other work unchanged")
     put(st, 24, "Residual minutes per automated thumbnail (assumption)",
         ap["playbooks"]["Thumbnail re-upload"]["residual_minutes"], "#,##0", BLUE, "playbooks.json — human spot-check time")
