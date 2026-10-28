@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Q1 2026 SaaS spend — waterfall</title>
+<style>
+  :root {
+    --surface: #fcfcfb; --ink: #0b0b0b; --ink-2: #52514e; --muted: #898781; --grid: #e1e0d9;
+    --bar: #2a78d6; --dup: #d03b3b; --total: #52514e; --tip-bg: #ffffff; --tip-border: #e1e0d9;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --surface: #1a1a19; --ink: #f0efec; --ink-2: #c3c2b7; --muted: #898781; --grid: #2c2c2a;
+      --bar: #3987e5; --dup: #e05454; --total: #a8a79f; --tip-bg: #242423; --tip-border: #383835;
+    }
+  }
+  * { box-sizing: border-box; }
+  body { margin: 0; background: var(--surface); color: var(--ink);
+         font: 14px/1.45 -apple-system, BlinkMacSystemFont, "Segoe UI", Arial, sans-serif; }
+  main { max-width: 1080px; margin: 0 auto; padding: 28px 24px 36px; }
+  h1 { font-size: 20px; margin: 0 0 4px; font-weight: 650; }
+  .sub { color: var(--ink-2); margin: 0 0 14px; }
+  .legend { display: flex; gap: 18px; flex-wrap: wrap; color: var(--ink-2); font-size: 13px; margin-bottom: 6px; }
+  .legend span { display: inline-flex; align-items: center; gap: 6px; }
+  .sw { width: 12px; height: 12px; border-radius: 3px; display: inline-block; }
+  .sw.hatch { background: repeating-linear-gradient(45deg, var(--dup) 0 3px, color-mix(in srgb, var(--dup) 55%, white) 3px 4.5px); outline: 1.5px solid var(--dup); }
+  .sw.dash { height: 0; border-top: 2px dashed var(--dup); border-radius: 0; width: 16px; }
+  .chart { position: relative; }
+  svg { width: 100%; height: auto; display: block; overflow: visible; }
+  .tick text, .xlab { fill: var(--muted); font-size: 12px; }
+  .gridline { stroke: var(--grid); stroke-width: 1; }
+  .conn { stroke: var(--muted); stroke-width: 1; stroke-dasharray: 2 2; opacity: .6; }
+  .val { fill: var(--ink-2); font-size: 11.5px; font-variant-numeric: tabular-nums; }
+  .val.strong { fill: var(--ink); font-weight: 650; font-size: 13px; }
+  .anno { fill: var(--ink-2); font-size: 12px; }
+  .ref { stroke: var(--dup); stroke-width: 1.5; stroke-dasharray: 5 4; }
+  .hit { fill: transparent; cursor: default; }
+  .bar { transition: opacity .12s; }
+  .dim .bar { opacity: .35; } .dim .bar.on { opacity: 1; }
+  #tip { position: absolute; pointer-events: none; background: var(--tip-bg); border: 1px solid var(--tip-border);
+         border-radius: 8px; padding: 8px 10px; font-size: 12.5px; box-shadow: 0 4px 14px rgba(0,0,0,.12);
+         opacity: 0; transition: opacity .1s; max-width: 280px; z-index: 2; }
+  #tip b { display: block; margin-bottom: 2px; }
+  #tip .row { display: flex; justify-content: space-between; gap: 16px; color: var(--ink-2); font-variant-numeric: tabular-nums; }
+  #tip .note { margin-top: 6px; color: var(--ink-2); }
+  .callout { margin-top: 14px; padding: 12px 14px; border-left: 3px solid var(--dup); background: color-mix(in srgb, var(--dup) 7%, transparent);
+             border-radius: 4px; color: var(--ink); }
+  .src { color: var(--muted); font-size: 12.5px; margin-top: 12px; }
+  details { margin-top: 14px; color: var(--ink-2); }
+  summary { cursor: pointer; }
+  table { border-collapse: collapse; margin-top: 8px; font-variant-numeric: tabular-nums; font-size: 13px; }
+  th, td { padding: 4px 12px 4px 0; text-align: left; border-bottom: 1px solid var(--grid); }
+  td.n, th.n { text-align: right; }
+  tr.dup td { color: var(--dup); font-weight: 600; }
+</style>
+</head>
+<body>
+<main>
+  <h1>Q1 2026 SaaS spend builds to $81,000 — $7,500 of it is a likely duplicate</h1>
+  <p class="sub">Northwind Media · Software &amp; SaaS line items, Q1 2026 (USD), in P&amp;L order</p>
+  <div class="legend" aria-hidden="true">
+    <span><i class="sw" style="background:var(--bar)"></i>Line item</span>
+    <span><i class="sw hatch"></i>⚠ Suspected duplicate (Amplitude Analytics)</span>
+    <span><i class="sw" style="background:var(--total)"></i>Subtotal as listed</span>
+    <span><i class="sw dash"></i>Total without duplicate</span>
+  </div>
+  <div class="chart" id="chart"><div id="tip" role="tooltip"></div></div>
+  <div class="callout">
+    <b>⚠ Amplitude Analytics ($7,500)</b> has the same amount and description ("Product analytics") as the Amplitude line.
+    Finance flagged it as a likely double-count, but the invoice hasn't been checked
+    (<code>slack_export.md</code> L147, L150, L153). Without it, Q1 SaaS spend is <b>$73,500</b>.
+  </div>
+  <details>
+    <summary>Table view</summary>
+    <table id="tbl"><thead><tr><th>Vendor</th><th class="n">Q1 USD</th><th class="n">Running total</th><th>Source</th></tr></thead><tbody></tbody></table>
+  </details>
+  <p class="src">Source: <code>pnl_q1_2026.csv</code> L9–L24 (line items and listed subtotal); values as provided. Recomputed sum = $81,000 = listed subtotal.</p>
+</main>
+<script>
+const DATA = [
+  ["Salesforce", 12000, 9], ["HubSpot", 9000, 10], ["Looker", 11000, 11], ["Amplitude", 7500, 12],
+  ["Amplitude Analytics", 7500, 13, true], ["Figma", 3600, 14], ["Adobe Creative Cloud", 5400, 15],
+  ["Notion", 2400, 16], ["Slack", 4200, 17], ["Google Workspace", 6000, 18], ["Zoom", 1800, 19],
+  ["GitHub", 3000, 20], ["Sentry", 1500, 21], ["Greenhouse", 4000, 22], ["Airtable", 2100, 23]
+];
+const LISTED = 81000;
+const fmt = v => "$" + v.toLocaleString("en-US");
+const fmtK = v => v === 0 ? "$0" : "$" + (v / 1000) + "k";
+
+let run = 0;
+const bars = DATA.map(([name, v, line, dup]) => { const b = { name, v, line, dup: !!dup, y0: run, y1: run + v, kind: dup ? "dup" : "item" }; run += v; return b; });
+bars.push({ name: "Subtotal (as listed)", v: LISTED, line: 24, y0: 0, y1: LISTED, kind: "total" });
+if (run !== LISTED) console.warn("Sum", run, "≠ listed", LISTED);
+
+const W = 1032, H = 470, M = { t: 34, r: 150, b: 96, l: 56 };
+const iw = W - M.l - M.r, ih = H - M.t - M.b;
+const yMax = 90000, y = v => M.t + ih - (v / yMax) * ih;
+const step = iw / bars.length, bw = Math.min(40, step - 10);
+const x = i => M.l + i * step + (step - bw) / 2;
+const NS = "http://www.w3.org/2000/svg";
+const el = (t, a = {}, p) => { const e = document.createElementNS(NS, t); for (const k in a) e.setAttribute(k, a[k]); if (p) p.appendChild(e); return e; };
+
+const svg = el("svg", { viewBox: `0 0 ${W} ${H}`, role: "img",
+  "aria-label": "Waterfall of Q1 2026 SaaS spend: 15 line items sum to $81,000; Amplitude Analytics, $7,500, is highlighted as a suspected duplicate." });
+const defs = el("defs", {}, svg);
+const pat = el("pattern", { id: "hatch", width: 6, height: 6, patternUnits: "userSpaceOnUse", patternTransform: "rotate(45)" }, defs);
+el("rect", { width: 6, height: 6, fill: "var(--dup)" }, pat);
+el("line", { x1: 0, y1: 0, x2: 0, y2: 6, stroke: "rgba(255,255,255,.5)", "stroke-width": 1.8 }, pat);
+
+// grid + y axis
+for (let v = 0; v <= yMax; v += 15000) {
+  const g = el("g", { class: "tick" }, svg);
+  el("line", { class: "gridline", x1: M.l, x2: W - M.r, y1: y(v), y2: y(v) }, g);
+  el("text", { x: M.l - 8, y: y(v) + 4, "text-anchor": "end" }, g).textContent = fmtK(v);
+}
+
+// reference line: total without duplicate
+const without = LISTED - bars.filter(b => b.dup).reduce((s, b) => s + b.v, 0);
+el("line", { class: "ref", x1: x(bars.length - 1) - 6, x2: x(bars.length - 1) + bw + 10, y1: y(without), y2: y(without) }, svg);
+const an = el("text", { class: "anno", x: x(bars.length - 1) + bw + 14, y: y(without) - 2 }, svg);
+el("tspan", { x: x(bars.length - 1) + bw + 14, dy: 0 }, an).textContent = "Without duplicate:";
+const t2 = el("tspan", { x: x(bars.length - 1) + bw + 14, dy: 15, "font-weight": 650, fill: "var(--dup)" }, an); t2.textContent = fmt(without);
+
+const G = el("g", { id: "bars" }, svg);
+bars.forEach((b, i) => {
+  const top = y(b.y1), bot = y(b.y0), h = Math.max(1, bot - top);
+  // connector to next bar
+  if (i < bars.length - 1) el("line", { class: "conn", x1: x(i) + bw, x2: x(i + 1), y1: top, y2: top }, G);
+  const fill = b.kind === "dup" ? "url(#hatch)" : b.kind === "total" ? "var(--total)" : "var(--bar)";
+  const r = el("rect", { class: "bar", x: x(i), y: top, width: bw, height: h, rx: 3, fill }, G);
+  if (b.kind === "dup") el("rect", { x: x(i) - 1.5, y: top - 1.5, width: bw + 3, height: h + 3, rx: 4, fill: "none", stroke: "var(--dup)", "stroke-width": 1.5 }, G);
+  b.rect = r;
+  // labels: value above each bar (short), bold on dup + total
+  const lab = el("text", { class: "val" + (b.kind !== "item" ? " strong" : ""), x: x(i) + bw / 2, y: top - 6, "text-anchor": "middle" }, G);
+  lab.textContent = b.kind === "total" ? fmt(b.v) : (b.kind === "dup" ? "⚠ +" + fmtK(b.v) : "+" + fmtK(b.v));
+  if (b.kind === "dup") lab.setAttribute("fill", "var(--dup)");
+  // x label
+  const tx = el("text", { class: "xlab", transform: `translate(${x(i) + bw / 2},${M.t + ih + 14}) rotate(-38)`, "text-anchor": "end" }, svg);
+  tx.textContent = b.name;
+  if (b.kind === "dup") { tx.setAttribute("fill", "var(--dup)"); tx.setAttribute("font-weight", "650"); }
+  if (b.kind === "total") { tx.setAttribute("fill", "var(--ink)"); tx.setAttribute("font-weight", "650"); }
+  // hit target (full column)
+  const hit = el("rect", { class: "hit", x: M.l + i * step, y: M.t, width: step, height: ih }, svg);
+  hit.addEventListener("mouseenter", e => show(b, i));
+  hit.addEventListener("mousemove", move);
+  hit.addEventListener("mouseleave", hide);
+});
+el("line", { x1: M.l, x2: W - M.r + 0, y1: y(0), y2: y(0), stroke: "var(--muted)", "stroke-width": 1 }, svg);
+
+const host = document.getElementById("chart"), tip = document.getElementById("tip");
+host.appendChild(svg);
+function show(b) {
+  G.parentNode.classList.add("dim"); b.rect.classList.add("on");
+  const note = b.kind === "dup" ? `<div class="note">⚠ Same amount &amp; description as “Amplitude” (L12). Flagged as likely double-count; invoice unconfirmed (slack L147, L150, L153).</div>`
+    : b.kind === "total" ? `<div class="note">Recomputed sum of L9–L23 = ${fmt(run)} — ties. Without the duplicate: ${fmt(without)}.</div>` : "";
+  tip.innerHTML = `<b>${b.name}</b>` + (b.kind === "total" ? `<div class="row"><span>Subtotal</span><span>${fmt(b.v)}</span></div>`
+    : `<div class="row"><span>Q1 spend</span><span>${fmt(b.v)}</span></div><div class="row"><span>Running total</span><span>${fmt(b.y1)}</span></div>`)
+    + `<div class="row"><span>Source</span><span>pnl_q1_2026.csv L${b.line}</span></div>` + note;
+  tip.style.opacity = 1;
+}
+function move(e) {
+  const r = host.getBoundingClientRect(); let lx = e.clientX - r.left + 14, ly = e.clientY - r.top + 14;
+  if (lx + tip.offsetWidth > r.width) lx = e.clientX - r.left - tip.offsetWidth - 14;
+  tip.style.left = lx + "px"; tip.style.top = ly + "px";
+}
+function hide() { tip.style.opacity = 0; G.parentNode.classList.remove("dim"); bars.forEach(b => b.rect.classList.remove("on")); }
+
+const tb = document.querySelector("#tbl tbody");
+bars.forEach(b => { const tr = document.createElement("tr"); if (b.kind === "dup") tr.className = "dup";
+  tr.innerHTML = `<td>${b.kind === "dup" ? "⚠ " : ""}${b.name}</td><td class="n">${fmt(b.v)}</td><td class="n">${fmt(b.y1)}</td><td>pnl_q1_2026.csv L${b.line}</td>`; tb.appendChild(tr); });
+</script>
+</body>
+</html>

@@ -91,3 +91,7 @@ Format for judgment calls: **JC-nn** — what looked wrong → what I decided �
 
 - **JC-25** — In the workbook, raw values are kept exactly as exported (Cloudflare stays the text '€1900', blanks stay blank). Only the Summary tab interprets them. *Reason: the user asked for raw data; interpretation must stay separable and visible.*
 - **JC-26** — Data-review L36 (Amplitude *event* duplicates) is listed in Evidence but marked "NOT the billing duplicate". *Reason: same vendor name and the word "duplicate" make it easy to conflate; my first parser did exactly that (17:15).*
+| 17:57 | Prompt | "Generate a waterfall graph from the data below. highlight second amplitude duplicate in red" (user pasted the 15 SaaS rows + subtotal, EU number format: $12.000 = $12,000). |
+| 18:02 | Files | `output/saas_waterfall.html` (interactive: hover tooltips with source line, table view, dark mode) + `output/saas_waterfall.png`. Palette validated (blue #2a78d6 vs red #d03b3b: CVD ΔE 23.8, PASS). First render: legend broken and "$73,500" label collided with bars → moved label right of the subtotal bar. |
+
+- **JC-27** — Pasted values match `pnl_q1_2026.csv` L9–L24 exactly (read "$12.000" as twelve thousand, EU separators). Chart kept in P&L order and running total checked = $81,000 = listed subtotal. Duplicate shown red **plus** hatch + ⚠ label (not colour alone). "Without duplicate $73,500" is a reference line, not an extra bar. *Reason: chart shows the data as given and makes the open question visible without restating the ledger.*
