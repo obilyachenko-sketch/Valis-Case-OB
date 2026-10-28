@@ -1,0 +1,3 @@
+request_id,ticket,type,to,date,condition
+TF-TCK-1097,TCK-1097,HANDOFF_TO_PERSON,Ops Support,2026-03-31,only if the form is still not returned — a person takes over with full history
+TF-TCK-1117,TCK-1117,REMINDER_2,creator_nightjar,2026-03-31,send only if the form has not been returned
