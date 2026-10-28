@@ -137,3 +137,13 @@ Format for judgment calls: **JC-nn** — what looked wrong → what I decided �
 
 - **JC-38** — Seasonality removed as a supporting argument for the value number. *Reason: my claim wasn't backed by the data; the one direct statement (L201) points the other way.*
 - **JC-39** — No cost figure exists in the bundle for an e-sign/tax-form tool or a self-serve thumbnail build (only "Cheap", L204). Reported break-even budgets from time cost instead of inventing vendor prices.
+| 20:04 | Prompt | "find supporting documentation: where are we wasting the most time, what would you automate first?" → answered in chat. |
+| 20:12 | Prompt | "build the excel with sources, add 'business criticality'. Scope reconciliation automation" |
+| 20:20 | Files | `build_timewaste_workbook.py` → `output/Time waste raw data.xlsx`: Summary (live ranking), Workflows (8 workflows, hours with low/high bounds, 5-dimension criticality with a sourced reason per score), Criticality rubric, Evidence (50 verbatim lines), Tickets (raw), Missing data. 106 formulas, recalc 0 errors. |
+| 20:20 | Fixes | W7/W8 tied exactly on the sort key → RANK duplicate, Summary skipped a rank; added a row-based tie-breaker. Unquantified workflows showed "0 h" on Summary (reads as "no waste") → now "—". |
+| 20:25 | Files | `automation/RECON_SCOPE.md`: problem (sourced), before→after targets, in/out, PROPOSED data contract for the 3 missing exports with ❓ open questions, matching rules, 9 exception codes, outputs, answer-complete acceptance test, plan, risks. |
+
+- **JC-40** — Business criticality = 5 dimensions × 1–3 (money exposure, trust in the numbers, deadline pressure, key-person risk, growth); every score cites its reason. Rank = criticality first, hours as tiebreaker. *Reason: on hours alone recon (~72, claimed) and support (70.5, measured) tie; the CEO's stated problem is trust in numbers.*
+- **JC-41** — "Active creators" definition rework ranks #2 on criticality but is marked "not automation — a decision". *Reason: Ben says it's a definitional choice, not a typo (slack L59); kept in the list because it is real waste.*
+- **JC-42** — Recon data contract is explicitly PROPOSED; field names are placeholders for the information the bundle says is compared (amounts, close dates, payout splits). *Reason: the files aren't in the bundle; inventing their schema as fact would be fabrication.*
+- **JC-43** — Recon $ value stated as small (~$4,800/yr at $20/h) and not used as the case. *Reason: honest arithmetic; the case is accuracy of 80% of revenue + close speed + key-person risk.*

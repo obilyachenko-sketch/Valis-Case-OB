@@ -19,6 +19,13 @@ Ask anything: `python Analysis/ask.py "Are we still hiring AEs?"`. If no answere
 | 3 | Automation, running | `automation/support_autopilot.py`, `automation/BUILDER_SPEC.md`, `output/autopilot/report.md` | **70.5 h → 40.6 h per quarter (−42%)** on the 140 real Q1 tickets; 99 tickets deflected, 243 dry-run actions. |
 | 4 | Build log | `BUILD_LOG.md` | Timestamped steps, dead-ends, 24 judgment calls on the dirty data. |
 
+Question-by-question workbooks (raw data, verbatim sources, conflicts):
+- `output/SaaS_Q1_2026_raw_data.xlsx` + `output/saas_waterfall.html/.png` — Q1 SaaS spend
+- `output/Hiring raw data.xlsx` + `output/sales_hiring_timeline.html/.png` — Q2 Sales hiring + other open roles
+- `output/Value number raw data.xlsx` — CFO worksheet for the value number
+- `output/Time waste raw data.xlsx` — where time goes, ranked by business criticality
+- `automation/RECON_SCOPE.md` — scope for the brand-deal reconciliation automation (ready to build once Finance shares the 3 exports)
+
 Also: `EVIDENCE_TRAIL.md` is the hand-built first pass at the source map, from before the code existed.
 
 ## Layout
