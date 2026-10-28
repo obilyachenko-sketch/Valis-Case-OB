@@ -1,4 +1,4 @@
-# Session log — Valis case, 2026-10-28 (16:17–22:07 CET)
+# Session log — Valis case, 2026-10-28 (16:17–22:12 CET)
 
 Every prompt in the working session with Claude (Claude Code, cloud session linked to the local folder), quoted as typed, with what came out of it and the commit that delivered it. Judgment calls on the data (JC-01…JC-48), dead-ends and corrections are in [BUILD_LOG.md](BUILD_LOG.md).
 
@@ -54,6 +54,7 @@ Every prompt in the working session with Claude (Claude Code, cloud session link
 | 44 | 21:52 | "push decision on Q3 to git Hub." | D2 recorded | `cd67115` |
 | 45 | 21:56 | "the last request: I need the logs of this session to be pushed to github. I need a link to copy." | This file | (this commit) |
 | 46 | 22:07 | "updated version. I think the only inconsistency is linking to file in Q2. can you push the data to github abnd create link as in the rest of the slides?" | Q1 + Q2 now link to their workbooks on GitHub; deck pushed | (this commit) |
+| 47 | 22:12 | "change to actual spend is likely ...push to github" | Q1 title + bullet reworded; deck v04 pushed | `0002d00`, (this commit) |
 
 ## Corrections made during the session (details in BUILD_LOG)
 - Sales answer first anchored on a relayed message instead of Dana's decision; fixed (17:15).
