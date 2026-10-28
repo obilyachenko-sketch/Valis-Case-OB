@@ -21,7 +21,7 @@ The service **breaks even below $1,275/year**. Sensitivity: **8.5–20.6 h saved
 | In (v1) | Out (v1) |
 |---|---|
 | Every ticket whose `Category` matches `^Tax form` → one form request | Thumbnails, payouts, login/access/takedown tickets |
-| E-sign request on the ticket date; reminders on day 3, 7 and 14; hand-off to a person on day 21 if the form isn't back | Choosing W-9 vs W-8 for the creator (no country in the data; the creator selects) |
+| E-sign request on the ticket date; reminders on day 3 and 7; hand-off to a person on day 14 if the form isn't back | Choosing W-9 vs W-8 for the creator (no country in the data; the creator selects) |
 | Reminders stop the moment a form is returned | Tax advice; validating TIN numbers |
 | Tracker per request, daily chase list for Ops, full audit log | Storing completed forms (stays in the e-sign provider) |
 | Before→after report on every run | Live sending before acceptance passes in staging |
@@ -50,7 +50,7 @@ UTF-8 or UTF-16 input is accepted. A missing column fails the whole run. **New f
 ## Acceptance test — "answer-complete" (`python -m unittest discover -s Analysis/tests -v`)
 1. **Every tax-form row becomes exactly one request:** 36 in Q1; every input row is processed, ignored as non-tax, or quarantined with a reason.
 2. **`before_minutes` equals the raw sum** of `Handle_Minutes` for those rows (**1,555**).
-3. **Each request has exactly** 1 e-sign request, 3 reminders and 1 hand-off, on the configured days (TCK-1002: reminder on 2026-01-05, hand-off on 2026-01-23).
+3. **Each request has exactly** 1 e-sign request, 2 reminders and 1 hand-off, on the configured days (TCK-1002: reminders 2026-01-05 and 01-09, hand-off 2026-01-16).
 4. **The replay covers every day** of the period, and its e-sign total equals the request count.
 5. **Idempotent:** two runs on the same input give byte-identical outputs.
 6. **Dirty input is handled:** a UTF-16 file with a duplicate ID, an invalid date and non-numeric minutes quarantines those 3 rows and processes the rest. A file with no tax rows fails loudly.

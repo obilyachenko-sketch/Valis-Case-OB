@@ -1,0 +1,9 @@
+Ticket_ID,Date,Category,Submitted_By,Assigned_To,Handle_Minutes,Status
+TCK-2001,2026-04-01,Tax form (W-9/W-8),creator_aurora,Ops Support,40,Closed
+TCK-2002,2026-04-02,Thumbnail re-upload,creator_birch,Ops Support,20,Closed
+TCK-2003,2026-04-06,Tax form (W-9/W-8),creator_cedar,,45,Closed
+TCK-2004,2026-04-09,Payout question,creator_delta,Ops Support,50,Closed
+TCK-2004,2026-04-09,Payout question,creator_delta,Ops Support,50,Closed
+TCK-2005,2026-04-31,Tax form (W-9/W-8),creator_echo,Ops Support,35,Open
+TCK-2006,2026-04-14,Tax form (W-9/W-8),creator_fjord,Ops Support,abc,Open
+TCK-2007,2026-04-15,Tax form (W-9/W-8),creator_grove,Ops Support,30,Open

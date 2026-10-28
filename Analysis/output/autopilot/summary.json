@@ -18,7 +18,7 @@
   "before_hours_per_week": 5.54,
   "after_hours_per_week": 3.19,
   "tickets_deflected": 99,
-  "actions_generated": 243,
+  "actions_generated": 207,
   "human_touches_before": 140,
   "human_touches_after_expected": 60.8,
   "fallback_rate": 0.2

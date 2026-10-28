@@ -48,14 +48,23 @@ class OnBundle(unittest.TestCase):
         for e in self.box:
             per.setdefault(e["ticket"], []).append(e["type"])
         self.assertEqual(set(per), {r["Ticket_ID"] for r in self.raw})
+        expected = sorted(["ESIGN_REQUEST", "HANDOFF_TO_PERSON"] + [f"REMINDER_{i}" for i in range(1, len(CFG["reminder_days"]) + 1)])
         for types in per.values():
-            self.assertEqual(sorted(types), ["ESIGN_REQUEST", "HANDOFF_TO_PERSON", "REMINDER_1", "REMINDER_2", "REMINDER_3"])
+            self.assertEqual(sorted(types), expected)
 
     def test_schedule_dates_follow_config(self):
-        r = next(e for e in self.box if e["ticket"] == "TCK-1002" and e["type"] == "REMINDER_1")
-        self.assertEqual(r["date"], "2026-01-05")  # opened 2026-01-02 + 3 days
+        from datetime import timedelta
+        d0 = date(2026, 1, 2)  # TCK-1002 opened
+        for i, dd in enumerate(CFG["reminder_days"], 1):
+            r = next(e for e in self.box if e["ticket"] == "TCK-1002" and e["type"] == f"REMINDER_{i}")
+            self.assertEqual(r["date"], (d0 + timedelta(days=dd)).isoformat())
         h = next(e for e in self.box if e["ticket"] == "TCK-1002" and e["type"] == "HANDOFF_TO_PERSON")
-        self.assertEqual(h["date"], "2026-01-23")  # + 21 days
+        self.assertEqual(h["date"], (d0 + timedelta(days=CFG["escalate_after_days"])).isoformat())
+
+    def test_current_cadence_is_3_7_handoff_14(self):
+        self.assertEqual((CFG["reminder_days"], CFG["escalate_after_days"]), ([3, 7], 14))
+        h = next(e for e in self.box if e["ticket"] == "TCK-1002" and e["type"] == "HANDOFF_TO_PERSON")
+        self.assertEqual(h["date"], "2026-01-16")
 
     def test_after_lower_and_reported(self):
         self.assertLess(self.s["after_minutes"], self.s["before_minutes"])

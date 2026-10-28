@@ -8,7 +8,7 @@ Q1 2026 creator support = **140 tickets, 4,230 handle-minutes (70.5 h)** in `sup
 ## Scope
 | In (v1) | Out (v1) — and why |
 |---|---|
-| Route `Tax form (W-9/W-8)` → e-sign request + reminders at day 3/7/14 + escalate at day 21 | `Payout question` — needs the payout tracker (not available; same gap blocks the brand-deal recon) |
+| Route `Tax form (W-9/W-8)` → e-sign request + reminders at day 3 and 7 + escalate at day 14 | `Payout question` — needs the payout tracker (not available; same gap blocks the brand-deal recon) |
 | Route `Thumbnail re-upload` → self-serve replace link, human fallback on reply | `Login issue`, `Account access` — security; keep human |
 | Validate every row, quarantine bad ones with a reason | `Content takedown` — legal/brand judgment |
 | Before→after report on every run | Sending real messages before the acceptance test passes in staging |

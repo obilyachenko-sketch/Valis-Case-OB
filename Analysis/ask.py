@@ -270,7 +270,7 @@ def answer_sales(root: Path) -> str:
                (f"; **enforcer on reqs: {enf}**" if enf else "") +
                "." + (" REQ-114 (Account Executive) is paused, not cancelled." if state == "FREEZE" and any(
                    re.search(r"paused, not killed|on hold", e[3].text) for e in support) else "") + "\n")
-    out.append(f"**Confidence: {conf}** — {len(indep)} independent sources ({", ".join(sorted(w or f for f, w in indep))}) state it is {word.lower()} on/after the decision"
+    out.append(f"**Confidence: {conf}** — {len(indep)} independent sources ({', '.join(sorted(w or f for f, w in indep))}) state it is {word.lower()} on/after the decision"
                + ("; no later statement contradicts it." if not later_contra else f"; {len(later_contra)} later contradicting statement(s)."))
     out.append("\n### Key evidence")
     out.append(f"- Decision: \"{short(current[3].text, 160)}\" {current[3].cite}")

@@ -10,8 +10,8 @@
     "Tax form (W-9/W-8)": {
       "action": "ESIGN_TAX_FORM",
       "residual_minutes": 10,
-      "reminder_days": [3, 7, 14],
-      "escalate_after_days": 21,
+      "reminder_days": [3, 7],
+      "escalate_after_days": 14,
       "why": "E-sign request + automatic reminder cadence replaces manual chasing; human verifies the returned form. People suggested e-sign services (slack_export.md:L204)."
     }
   },

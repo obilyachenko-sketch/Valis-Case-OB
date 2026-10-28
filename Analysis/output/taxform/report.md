@@ -30,10 +30,9 @@ Input `support_tickets_q1_2026.csv`: 140 rows, 0 quarantined · **36 tax-form ti
 | 50% | 11.5 | 10.0 | 8.5 |
 
 ## What the chaser did (replay of the period, dry-run)
-180 messages scheduled: ESIGN_REQUEST 36, HANDOFF_TO_PERSON 36, REMINDER_1 36, REMINDER_2 36, REMINDER_3 36. Inside the period: 36 e-sign requests, and — if no form were ever returned (worst case) — up to 96 reminders and 26 hand-offs; reminders stop as soon as a form comes back, so the expected hand-offs are ~7 at the assumed 20%. Busiest day: 2026-01-23. Day-by-day log: `replay_by_day.csv`; every message: `outbox.jsonl`; state per request: `tracker.csv`.
+144 messages scheduled: ESIGN_REQUEST 36, HANDOFF_TO_PERSON 36, REMINDER_1 36, REMINDER_2 36. Inside the period: 36 e-sign requests, and — if no form were ever returned (worst case) — up to 67 reminders and 29 hand-offs; reminders stop as soon as a form comes back, so the expected hand-offs are ~7 at the assumed 20%. Busiest day: 2026-01-16. Day-by-day log: `replay_by_day.csv`; every message: `outbox.jsonl`; state per request: `tracker.csv`.
 
 ## Chase list for 2026-03-31 — steps due today if the form isn't back yet
-- TF-TCK-1097 — HANDOFF_TO_PERSON → Ops Support
 - TF-TCK-1117 — REMINDER_2 → creator_nightjar
 
 ## Data quality

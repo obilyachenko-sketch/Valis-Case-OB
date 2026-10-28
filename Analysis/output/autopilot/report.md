@@ -32,7 +32,7 @@ Input: `support_tickets_q1_2026.csv` · 140 rows · 140 processed · 0 quarantin
 | Saved h / quarter (residual ×2) | 23.6 | 20.9 | 18.3 | 13.1 |
 
 ## Actions generated (dry-run outbox)
-243 actions for 99 tickets → `outbox.jsonl` (SELF_SERVE_THUMBNAIL: 63, ESIGN_REQUEST: 36, ESIGN_REMINDER: 108, ESCALATE_TO_HUMAN: 36). Nothing is sent; a builder wires these to the CMS self-serve endpoint and an e-sign provider.
+207 actions for 99 tickets → `outbox.jsonl` (SELF_SERVE_THUMBNAIL: 63, ESIGN_REQUEST: 36, ESIGN_REMINDER: 72, ESCALATE_TO_HUMAN: 36). Nothing is sent; a builder wires these to the CMS self-serve endpoint and an e-sign provider.
 
 ## Data quality
 - No rows quarantined.

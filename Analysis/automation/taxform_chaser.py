@@ -4,8 +4,9 @@
 Runs end-to-end on support_tickets_q1_2026.csv (or any file with the same columns):
   1. ingest + validate against the data contract      -> quarantine.csv (bad rows never dropped silently)
   2. select tax-form tickets (Category ~ ^Tax form)    -> one form request per ticket
-  3. build each request's schedule: e-sign request on the ticket date, reminders on day 3/7/14,
-     hand-off to a person on day 21 if the form still isn't back
+  3. build each request's schedule from taxform_config.json: e-sign request on the ticket date, reminders on
+     the configured days (currently 3 and 7), hand-off to a person on the escalation day (currently 14) if the
+     form still isn't back
   4. REPLAY the whole period day by day: what the chaser sends each day, and the chase list Ops would see
   5. BEFORE (measured Handle_Minutes) -> AFTER (modelled) with a sensitivity grid and break-even budget
 
