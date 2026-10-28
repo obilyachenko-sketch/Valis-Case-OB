@@ -81,10 +81,30 @@ CONFLICTS = [
      "leadership_sync L19 — July sync; trigger = coverage on target + 2 months recovered conversion",
      "Minutes are the most specific; the others are compatible.", "Defines when it could lift", "Medium",
      "July leadership notes"),
+    ("C5", "Which non-Sales roles are open?", "headcount_roster.csv L23–L25 — REQ-118 (Eng), REQ-121 (Content), REQ-125 (Data)",
+     "slack L222 (Elena, May 1, 'official picture') — Sales AE, Creator Mgmt backfill, one Eng role",
+     "Neither list is complete. Union = 4 open non-Sales roles (5+ if Eng has 'a couple', L217).", "Open-role count 4–5+", "Medium",
+     "Greenhouse export / updated req list (Elena)"),
     ("C4", "Do backfills count?", "slack L67 — 'all new Sales headcount'",
      "leadership_sync L17 — net-new only; backfills case by case (Priya + Tomás)",
      "Minutes add detail. Net-new frozen; backfills need sign-off.", "Scope of the freeze", "Medium",
      "Confirm with Priya"),
+]
+
+# Other (non-Sales) roles: (role, req, team, manager, status, start, in_roster, in_people_may1, raw_src, flag, commentary)
+OTHER = [
+    ("Backend Engineer", "REQ-118", "Engineering", "Raj Patel", "OPEN", "2026-08-01", "Yes (L23)", "Yes — 'an Eng role' (slack L222)",
+     (ROSTER, 23), "CHECK", "Raj: Eng has 'a couple open but no urgency' (slack L217), but the roster lists only one Eng req."),
+    ("Senior Video Editor", "REQ-121", "Content/Production", "Yuki Tanaka", "OPEN", "2026-07-01", "Yes (L24)", "No",
+     (ROSTER, 24), "CONFLICT", "In the roster but missing from Elena's May 1 'official picture' (slack L222)."),
+    ("Analytics Engineer", "REQ-125", "Data", "Ben Okoro", "OPEN", "", "Yes (L25)", "No",
+     (ROSTER, 25), "CONFLICT", "No target start date (roster L25), so urgency can't be judged. Also missing from Elena's May 1 list (slack L222)."),
+    ("Creator Management backfill", "— (no req ID)", "Creator Management", "Sofia Marchetti", "Open — proceeding", "", "No", "Yes (slack L222)",
+     (SLACK, 239), "CONFLICT", "Not in the roster at all. Sofia: 'one backfill open' (L214); confirmed unaffected by the freeze and proceeding (L236, L239)."),
+    ("Lifecycle marketer", "— (proposed)", "Growth/Marketing", "Hannah Cole", "Proposed for Q3", "", "No", "No",
+     (SLACK, 247), "PROPOSED", "Not a req yet. Hannah 'will write it up' for Q3 planning; requests due end of June (slack L243)."),
+    ("Post-production video editor", "— (proposed)", "Content/Production", "Yuki Tanaka", "Proposed for Q3", "", "No", "No",
+     (SLACK, 250), "PROPOSED", "Yuki 'will submit'; post is the real bottleneck (also L34). Unclear if additional to REQ-121 or overlapping."),
 ]
 
 ACTIONS = [
@@ -194,10 +214,48 @@ def main() -> Path:
     cf["A1"].font = BOLD
     header(cf, 2, ["ID", "Issue", "Source A", "Source B", "Resolution", "Effect on answer", "Confidence", "Unblocker"],
            [6, 22, 44, 48, 40, 26, 11, 28])
-    for i, row in enumerate(CONFLICTS, 3):
+    for i, row in enumerate(sorted(CONFLICTS), 3):
         for j, v in enumerate(row, 1):
             c = cf.cell(row=i, column=j, value=v)
             c.font, c.alignment, c.border = BASE, WRAP, THIN
+
+    # ---------------------------------------------------------------- Other open roles
+    orl = wb.create_sheet("Other open roles", 2)
+    orl["A1"] = ("Non-Sales roles. The freeze is Sales-only ('Other teams' open reqs are unaffected' — slack L79, L236), "
+                 "so these stay open. Roster and People's list don't agree — see Flag and Conflict C5.")
+    orl["A1"].font = BOLD
+    header(orl, 2, ["Role", "Req ID", "Team", "Hiring manager", "Status", "Target start", "Affected by Sales freeze?",
+                    "In roster (May 1)?", "In People's May 1 list?", "Raw source (verbatim)", "Source", "Flag", "Commentary & references"],
+           [24, 14, 18, 15, 16, 11, 12, 11, 18, 52, 22, 11, 60])
+    for i, (role, req, team, mgr, st, start, in_r, in_p, (f, ln), flag, com) in enumerate(OTHER, 3):
+        vals = [role, req, team, mgr, st, start or "— (blank)", "No", in_r, in_p, docs[f].line(ln).strip(), f"{f}:L{ln}", flag, com]
+        for j, v in enumerate(vals, 1):
+            c = orl.cell(row=i, column=j, value=v)
+            c.font, c.alignment, c.border = BASE, WRAP, THIN
+        fill = {"CONFLICT": RED_FILL, "CHECK": AMBER_FILL, "PROPOSED": GREY_FILL}.get(flag)
+        if fill:
+            for j in (1, 12):
+                orl.cell(row=i, column=j).fill = fill
+        orl.cell(row=i, column=12).font = BOLD
+        if flag in ("CONFLICT", "CHECK"):
+            note(orl.cell(row=i, column=1), com)
+        if not start:
+            orl.cell(row=i, column=6).fill = AMBER_FILL if req.startswith("REQ") else PatternFill()
+    n_other = len(OTHER) + 2
+    r0 = n_other + 2
+    O = lambda col: f"${col}$3:${col}${n_other}"  # noqa: E731
+    summ = [("Open non-Sales roles (roster + People list, excl. proposed)", f'=COUNTIFS({O("E")},"OPEN")+COUNTIFS({O("E")},"Open*proceeding")'),
+            ("…of which in the roster", f'=COUNTIFS({O("H")},"Yes*")'),
+            ("…of which in People's May 1 list", f'=COUNTIFS({O("I")},"Yes*")'),
+            ("Proposed for Q3 (not yet reqs)", f'=COUNTIFS({O("E")},"Proposed*")'),
+            ("Affected by the Sales freeze", f'=COUNTIFS({O("G")},"Yes")')]
+    for k, (lab, f_) in enumerate(summ):
+        orl.cell(row=r0 + k, column=1, value=lab).font = BOLD
+        c = orl.cell(row=r0 + k, column=2, value=f_)
+        c.font = BOLD
+    orl.cell(row=r0 + len(summ) + 1, column=1, value=(
+        "Bounds: 4 open non-Sales roles in the union of both sources; 5+ if Engineering really has 'a couple' open (slack L217). "
+        "Unblock with a Greenhouse export or an updated req list from Elena.")).font = Font(name=F, size=9, italic=True)
 
     # ---------------------------------------------------------------- Open actions
     oa = wb.create_sheet("Open actions")
@@ -236,6 +294,8 @@ def main() -> Path:
         ("Revisit", "July leadership sync", BASE,
          "Trigger: pipeline coverage on target + 2 months recovered conversion (leadership_sync L19). Other wording in C3."),
         ("Confidence — state & owner", "High", BOLD, "4 independent sources agree (Dana, Priya, Elena, minutes); no later reversal."),
+        ("Other teams' open roles", "Unaffected — see 'Other open roles'", BASE,
+         "4 open non-Sales roles (roster and People's list disagree — Conflict C5); 2 more proposed for Q3."),
         ("Confidence — follow-through", "Medium", BOLD, "Candidate handling and Greenhouse pause not evidenced — see 'Open actions'."),
     ]
     for i, (label, val, font, src) in enumerate(items, 4):
@@ -246,10 +306,10 @@ def main() -> Path:
         s.cell(row=i, column=3).alignment = WRAP
     s["B7"].number_format = "yyyy-mm-dd hh:mm"
     s["B12"].number_format = "yyyy-mm-dd hh:mm"
-    s["A18"] = "Colour key on 'Timeline (raw)': green = decision · red = superseded / conflicts with the decision · amber = scope note or open item · grey = context."
-    s["A18"].font = Font(name=F, size=9, italic=True)
-    s["A19"] = "Scope: Sales headcount decisions, 2026-04-21 → 2026-06-17 (full bundle). Anything after the last message is unknown."
+    s["A19"] = "Colour key on 'Timeline (raw)': green = decision · red = superseded / conflicts with the decision · amber = scope note or open item · grey = context."
     s["A19"].font = Font(name=F, size=9, italic=True)
+    s["A20"] = "Scope: Sales headcount decisions, 2026-04-21 → 2026-06-17 (full bundle). Anything after the last message is unknown."
+    s["A20"].font = Font(name=F, size=9, italic=True)
 
     out = A / "output" / "Sales_hiring_raw_data.xlsx"
     wb.save(out)
