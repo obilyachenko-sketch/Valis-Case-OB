@@ -78,3 +78,16 @@ Format for judgment calls: **JC-nn** — what looked wrong → what I decided �
 - Pull Q2 support tickets and re-run `value_number.py` + autopilot unchanged (resolves JC-19).
 - Amplitude invoice → resolves the $7,500 SaaS range.
 - Get the three recon exports → build the 3-way matcher (next automation).
+
+---
+
+## Session 3 — question-by-question review
+
+| Time | Step | Detail |
+|---|---|---|
+| 17:35 | Prompt | "go question by question… start with SaaS spend" (+ user's analysis skill: ranked evidence, facts vs judgment, confidence, math, bounds). Answered in chat. |
+| 17:44 | Prompt | "show me raw data in excel, include commentary with reference when there is conflicting data" |
+| 17:47 | Files | `build_saas_workbook.py` → `output/SaaS_Q1_2026_raw_data.xlsx`: Summary (9 live formulas, recalculated, 0 errors), P&L raw (all 34 rows unchanged incl. '€1900' text and blanks, with flags + cell comments), Evidence (14 Slack/notes lines quoted with file:line), Conflicts (C1–C5). |
+
+- **JC-25** — In the workbook, raw values are kept exactly as exported (Cloudflare stays the text '€1900', blanks stay blank). Only the Summary tab interprets them. *Reason: the user asked for raw data; interpretation must stay separable and visible.*
+- **JC-26** — Data-review L36 (Amplitude *event* duplicates) is listed in Evidence but marked "NOT the billing duplicate". *Reason: same vendor name and the word "duplicate" make it easy to conflate; my first parser did exactly that (17:15).*
