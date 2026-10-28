@@ -25,7 +25,8 @@
   main { max-width: 1120px; margin: 0 auto; padding: 28px 24px 36px; }
   h1 { font-size: 20px; margin: 0 0 4px; font-weight: 650; }
   .sub { color: var(--ink-2); margin: 0 0 14px; }
-  .legend { display: flex; gap: 18px; flex-wrap: wrap; color: var(--ink-2); font-size: 13px; margin-bottom: 8px; }
+  .legend { display: flex; gap: 18px; flex-wrap: wrap; color: var(--ink-2); font-size: 13px; margin: 4px 0 6px; }
+  .badge-l { width: 16px; height: 16px; border-radius: 50%; background: var(--ink); color: var(--surface); font-size: 10px; font-style: normal; font-weight: 700; display: inline-flex; align-items: center; justify-content: center; }
   .legend span { display: inline-flex; align-items: center; gap: 6px; }
   .dot { width: 11px; height: 11px; border-radius: 50%; display: inline-block; }
   .ring { width: 15px; height: 15px; border-radius: 50%; display: inline-block; border: 2px solid var(--ink); background: var(--freeze); box-shadow: inset 0 0 0 2px var(--surface); }
@@ -51,7 +52,7 @@
   .facts { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; margin: 6px 0 14px; }
   .fact { border: 1px solid var(--grid); border-radius: 8px; padding: 10px 12px; }
   .fact .k { color: var(--muted); font-size: 12px; } .fact .v { font-weight: 650; font-size: 15px; }
-  .key { list-style: none; padding: 0; margin: 10px 0 0; display: grid; grid-template-columns: 1fr 1fr; gap: 6px 24px; font-size: 13px; color: var(--ink-2); }
+  .key { list-style: none; padding: 0; margin: 10px 0 0; display: grid; grid-template-columns: 1fr; gap: 6px; font-size: 13px; color: var(--ink-2); }
   .key li { display: flex; gap: 8px; align-items: baseline; }
   .key .badge { flex: none; width: 18px; height: 18px; border-radius: 50%; background: var(--ink); color: var(--surface); font-size: 11px; display: inline-flex; align-items: center; justify-content: center; }
   .key code { font-size: 12px; }
@@ -67,22 +68,21 @@
 <body>
 <main>
   <h1>Sales hiring went from “approved” to frozen on June 10, and nothing has reversed it since</h1>
-  <p class="sub">Northwind Media · every Sales-hiring statement in Slack, leadership minutes and the roster, Apr 21 – Jun 17, 2026</p>
+  <p class="sub">Northwind Media · Sales-hiring statements in Slack, leadership minutes and the roster, Apr 21 – Jun 17, 2026 · one dot per statement</p>
   <div class="facts">
     <div class="fact"><div class="k">Current state</div><div class="v">Frozen (REQ-114 paused)</div></div>
     <div class="fact"><div class="k">Decision owner</div><div class="v">Dana Whitfield, CEO</div></div>
     <div class="fact"><div class="k">Enforcer on reqs</div><div class="v">Priya Raman, CFO</div></div>
     <div class="fact"><div class="k">Revisit</div><div class="v">July leadership sync</div></div>
   </div>
+
+  <div class="chart" id="chart"><div id="tip" role="tooltip"></div></div>
   <div class="legend" aria-hidden="true">
     <span><i class="dot" style="background:var(--hire)"></i>Hire</span>
     <span><i class="dot" style="background:var(--defer)"></i>Defer</span>
     <span><i class="dot" style="background:var(--freeze)"></i>Freeze</span>
-    <span><i class="dot" style="background:transparent;border:2px solid var(--ctx)"></i>Context / open item</span>
-    <span><i class="ring"></i>Decision</span>
-    <span><span class="xmark">✕</span>Superseded</span>
+    <span><i class="badge-l">#</i>Key moment (listed below)</span>
   </div>
-  <div class="chart" id="chart"><div id="tip" role="tooltip"></div></div>
   <ol id="key" class="key"></ol>
   <details>
     <summary>Table view</summary>
@@ -92,7 +92,7 @@
 </main>
 <script>
 const DATA = [{"t": "2026-04-21T09:31", "timed": true, "file": "slack_export.md", "line": 17, "who": "Tomás Reyes", "stance": "HIRE", "decision": false, "flag": "", "text": "Won't argue the number. Two big renewals slipped into Q2 and one logo churned. I still think we under-invested in AE capacity going into the year. We've got REQ-114 approved and I want to get an AE seated by mid-July.", "note": "Tomás pushes to seat an AE on REQ-114 by mid-July. Advocacy, not a decision.", "label": "Tomás pushes to seat an AE (REQ-114)"}, {"t": "2026-04-21T09:40", "timed": true, "file": "slack_export.md", "line": 20, "who": "Marcus Lindqvist", "stance": "DEFER", "decision": false, "flag": "", "text": "Let's see how Q2 pipeline looks before we add bodies. Capacity isn't the issue if conversion is the issue.", "note": "Marcus (COO): wait for Q2 pipeline before adding headcount.", "label": ""}, {"t": "2026-04-21T09:44", "timed": true, "file": "slack_export.md", "line": 23, "who": "Tomás Reyes", "stance": "HIRE", "decision": false, "flag": "", "text": "Conversion is partly a coverage issue though. Same reps chasing too many accounts.", "note": "Tomás: conversion is partly a coverage problem. Argument for hiring.", "label": ""}, {"t": "2026-04-21T09:52", "timed": true, "file": "slack_export.md", "line": 26, "who": "Dana Whitfield", "stance": "DEFER", "decision": false, "flag": "", "text": "Park it. Let's get through the board deck first, then we talk headcount with real numbers in front of us.", "note": "Dana parks the headcount question until after the board deck. No decision yet.", "label": "Dana: “Park it”"}, {"t": "2026-05-01T00:00", "timed": false, "file": "headcount_roster.csv", "line": 22, "who": "Headcount roster", "stance": "HIRE", "decision": false, "flag": "SUPERSEDED", "text": "REQ-114,Sales,Account Executive,APPROVED,2026-07-15,Tomás Reyes", "note": "REQ-114 shows APPROVED with a 2026-07-15 start. Superseded by the 2026-06-10 freeze: Elena calls the roster 'now stale' (slack L230) and the minutes say 'superseded by this decision' (leadership_sync L16). Conflict C1.", "label": "Roster: REQ-114 APPROVED (superseded)"}, {"t": "2026-05-01T16:30", "timed": true, "file": "slack_export.md", "line": 222, "who": "Elena Novak", "stance": "HIRE", "decision": false, "flag": "SUPERSEDED", "text": "Roster snapshot is locked as of today (2026-05-01). Open reqs captured: a Sales AE (REQ-114, approved, target start mid-July), plus a Creator Management backfill and an Eng role. That's the official picture for the board.", "note": "Elena confirms the May 1 snapshot lists REQ-114 as approved. Superseded on Jun 10–11 (C1).", "label": ""}, {"t": "2026-05-01T16:41", "timed": true, "file": "slack_export.md", "line": 225, "who": "Tomás Reyes", "stance": "HIRE", "decision": false, "flag": "", "text": "Good. REQ-114 is the one I care about — need that AE seated by July 15.", "note": "Tomás: needs the AE seated by July 15.", "label": ""}, {"t": "2026-06-10T08:47", "timed": true, "file": "slack_export.md", "line": 67, "who": "Dana Whitfield", "stance": "FREEZE", "decision": true, "flag": "DECISION", "text": "OK, decision on Sales hiring. After the Q1 sales miss we're FREEZING all new Sales headcount until pipeline recovers. No new AE reqs move forward, REQ-114 included. Priya holds the line on reqs — nothing gets approved without her sign-off, and Sales is a no right now.", "note": "THE DECISION. CEO freezes all new Sales headcount, REQ-114 included; Priya holds the line on reqs. Dated Wed Jun 10. The minutes record the same decision dated Jun 11 (C2).", "label": "Dana: FREEZE all new Sales headcount"}, {"t": "2026-06-10T08:52", "timed": true, "file": "slack_export.md", "line": 70, "who": "Priya Raman", "stance": "FREEZE", "decision": false, "flag": "", "text": "Understood, I'll hold them. Tomás, that means REQ-114 is paused, not killed — we revisit when Q2 pipeline shows recovery.", "note": "Enforcer confirms: REQ-114 'paused, not killed'. Revisit 'when Q2 pipeline shows recovery' (C3).", "label": ""}, {"t": "2026-06-10T09:05", "timed": true, "file": "slack_export.md", "line": 73, "who": "Tomás Reyes", "stance": "FREEZE", "decision": false, "flag": "", "text": "Noted, though I think we're going to feel this in Q3. Putting my objection on record. But I'll work with what I've got.", "note": "Tomás objects on record but complies. Dissent, not a reversal.", "label": ""}, {"t": "2026-06-10T09:11", "timed": true, "file": "slack_export.md", "line": 76, "who": "Marcus Lindqvist", "stance": "FREEZE", "decision": false, "flag": "", "text": "This is the right call for now. Revisit at the Q2 review.", "note": "COO backs it; revisit 'at the Q2 review'. The minutes say July sync with a specific trigger (C3).", "label": ""}, {"t": "2026-06-10T09:14", "timed": true, "file": "slack_export.md", "line": 79, "who": "Dana Whitfield", "stance": "FREEZE", "decision": true, "flag": "DECISION", "text": "Thanks all. To be clear so there's no ambiguity downstream: current state is frozen on Sales hiring, I'm making the call, Priya enforces it on the req side. Other teams' open reqs are unaffected for now.", "note": "Ownership stated explicitly: 'I'm making the call, Priya enforces it'. Freeze is Sales-only.", "label": ""}, {"t": "2026-06-11T00:00", "timed": false, "file": "meeting_notes/leadership_sync_2026-06-11.md", "line": 15, "who": "Leadership minutes", "stance": "context", "decision": false, "flag": "", "text": "Dana raised the open Sales req (the AE role, REQ-114, Tomás's team) that was approved back in early May. Question on the table: do we keep hiring into Sales or hold?", "note": "Question put to the room: keep hiring into Sales or hold? Framing, not a stance.", "label": ""}, {"t": "2026-06-11T00:00", "timed": false, "file": "meeting_notes/leadership_sync_2026-06-11.md", "line": 16, "who": "Leadership minutes", "stance": "FREEZE", "decision": true, "flag": "DECISION", "text": "DECISION: Freeze all new Sales headcount until pipeline recovers. Quote (Dana): *\"After the Q1 sales miss we're freezing all new Sales headcount until pipeline recovers.\"* This includes REQ-114 (AE) — now on hold, not actively recruiting. The 2026-05-01 roster showing it APPROVED is superseded by this decision.", "note": "Formal minute of the decision; states the 05-01 roster is superseded. File and header date it 2026-06-11, but Slack has it Jun 10 and Elena on Jun 11 says 'yesterday's leadership call' (C2).", "label": "Minutes record DECISION"}, {"t": "2026-06-11T00:00", "timed": false, "file": "meeting_notes/leadership_sync_2026-06-11.md", "line": 17, "who": "Leadership minutes", "stance": "FREEZE", "decision": false, "flag": "SCOPE", "text": "Scope: net-new Sales reqs only. Backfills for regretted attrition to be reviewed case-by-case by Priya + Tomás, not auto-approved.", "note": "Scope: net-new Sales reqs only; backfills reviewed case by case by Priya + Tomás. Slack says 'all new Sales headcount' and doesn't mention backfills (C4).", "label": ""}, {"t": "2026-06-11T00:00", "timed": false, "file": "meeting_notes/leadership_sync_2026-06-11.md", "line": 18, "who": "Leadership minutes", "stance": "FREEZE", "decision": true, "flag": "DECISION", "text": "Owner: Decision made by Dana (CEO); Priya (CFO) holds the line / enforces — no new Sales req moves forward without her sign-off.", "note": "Owner: Dana (CEO). Enforcer: Priya (CFO). Matches slack L67, L79.", "label": ""}, {"t": "2026-06-11T00:00", "timed": false, "file": "meeting_notes/leadership_sync_2026-06-11.md", "line": 19, "who": "Leadership minutes", "stance": "FREEZE", "decision": false, "flag": "", "text": "Revisit trigger: pipeline coverage back to target + two consecutive months of recovered conversion. Re-evaluate at July leadership sync.", "note": "Revisit trigger: pipeline coverage on target + 2 months recovered conversion; re-evaluate at July sync (C3).", "label": ""}, {"t": "2026-06-11T00:00", "timed": false, "file": "meeting_notes/leadership_sync_2026-06-11.md", "line": 20, "who": "Leadership minutes", "stance": "context", "decision": false, "flag": "OPEN", "text": "Tomás flagged candidate already in late-stage interviews for REQ-114 — Priya to confirm whether to pause or let the loop finish without an offer. Action: Priya + Tomás to align this week.", "note": "Late-stage REQ-114 candidate: pause, or finish the loop without an offer? Priya + Tomás to align. Outcome not in the bundle.", "label": ""}, {"t": "2026-06-11T00:00", "timed": false, "file": "meeting_notes/leadership_sync_2026-06-11.md", "line": 21, "who": "Leadership minutes", "stance": "context", "decision": false, "flag": "OPEN", "text": "Elena (People) to be looped in so recruiting pauses the req in Greenhouse. Action: Marcus to notify Elena.", "note": "Recruiting to pause the req in Greenhouse; Marcus to notify Elena. Completion not in the bundle.", "label": ""}, {"t": "2026-06-11T09:30", "timed": true, "file": "slack_export.md", "line": 230, "who": "Elena Novak", "stance": "FREEZE", "decision": false, "flag": "", "text": "Following yesterday's leadership call: Sales hiring is frozen effective immediately. REQ-114 is paused per Dana's decision, Priya enforcing on reqs. The May 1 roster is now stale on that point — Sales AE is NOT moving forward right now. Updating my notes; please don't recruit against it.", "note": "People confirms the freeze and says the May 1 roster is stale (C1); also dates the call to the previous day (C2).", "label": ""}, {"t": "2026-06-11T09:38", "timed": true, "file": "slack_export.md", "line": 233, "who": "Sofia Marchetti", "stance": "context", "decision": false, "flag": "", "text": "Got it. Does the freeze touch the Creator Management backfill?", "note": "Sofia asks whether the freeze covers the Creator Management backfill.", "label": ""}, {"t": "2026-06-11T09:41", "timed": true, "file": "slack_export.md", "line": 236, "who": "Elena Novak", "stance": "FREEZE", "decision": false, "flag": "", "text": "No — freeze is Sales-only for now. Other teams' open reqs are unaffected. Just Sales.", "note": "Freeze is Sales-only; other teams' open reqs unaffected.", "label": ""}, {"t": "2026-06-15T14:00", "timed": true, "file": "slack_export.md", "line": 244, "who": "Elena Novak", "stance": "FREEZE", "decision": false, "flag": "", "text": "Q3 planning prep: if you want any new headcount considered, get it to me with justification by end of month. Note Sales is on freeze so don't bother submitting Sales reqs until that lifts.", "note": "Q3 planning: don't submit Sales reqs while the freeze holds. Latest statement in the bundle; still frozen.", "label": "Elena: no Sales reqs for Q3"}];
-const LANES = [["HIRE", "Hire", "var(--hire)"], ["DEFER", "Defer", "var(--defer)"], ["FREEZE", "Freeze", "var(--freeze)"], ["context", "Context / open", "var(--ctx)"]];
+const LANES = [["HIRE", "Hire", "var(--hire)"], ["DEFER", "Defer", "var(--defer)"], ["FREEZE", "Freeze", "var(--freeze)"]];
 const laneIx = Object.fromEntries(LANES.map((l, i) => [l[0], i]));
 const NS = "http://www.w3.org/2000/svg";
 const el = (t, a = {}, p) => { const e = document.createElementNS(NS, t); for (const k in a) e.setAttribute(k, a[k]); if (p) p.appendChild(e); return e; };
@@ -100,13 +100,13 @@ const fmtDay = s => new Date(s + "T12:00").toLocaleDateString("en-GB", { weekday
 const DECISION_DAY = "2026-06-10", ROSTER_DAY = "2026-05-01";
 
 // ordinal date columns (only days with statements) + one column for "after the bundle"
-const sorted = [...DATA].sort((a, b) => a.t.localeCompare(b.t) || a.line - b.line);
+const sorted = [...DATA].filter(p => p.stance !== "context").sort((a, b) => a.t.localeCompare(b.t) || a.line - b.line);
 const days = [...new Set(sorted.map(p => p.t.slice(0, 10)))];
 const cols = days.map(dy => ({ day: dy, pts: sorted.filter(p => p.t.startsWith(dy)) }));
 cols.push({ day: "after", pts: [] });
 const PAD = 22, STEP = 24, GAP = 46;
 cols.forEach(c => c.w = c.day === "after" ? 150 : Math.max(110, PAD * 2 + STEP * (c.pts.length - 1)));
-const M = { t: 70, r: 12, b: 64, l: 128 }, laneH = 78;
+const M = { t: 70, r: 12, b: 64, l: 128 }, laneH = 72;
 let cx = M.l;
 cols.forEach((c, i) => { c.x0 = cx; cx += c.w + (i < cols.length - 1 ? GAP : 0); });
 const W = cx + M.r, H = M.t + laneH * LANES.length + M.b;
@@ -146,13 +146,12 @@ cols.forEach((c, i) => {
   const t = el("text", { class: "tick", x: mid, y: yBot + 22, "text-anchor": "middle", "font-weight": c.day === DECISION_DAY ? 700 : 400,
     fill: c.day === DECISION_DAY ? "var(--ink)" : "var(--muted)" }, svg);
   t.textContent = c.day === "after" ? "Jun 18 → July" : fmtDay(c.day);
-  if (c.day === "after") { const t2 = el("text", { class: "tick", x: mid, y: yBot + 40, "text-anchor": "middle" }, svg); t2.textContent = "Revisit: July sync"; }
+  if (c.day === "after") { const t2 = el("text", { class: "tick", x: mid, y: yBot + 40, "text-anchor": "middle" }, svg); t2.textContent = "(revisit at July sync)"; }
   if (i < cols.length - 1) {
     const nx = cols[i + 1];
     const gd = nx.day === "after" ? null : Math.round((dayMs(nx.day) - dayMs(c.day)) / 864e5);
     const gx = c.x0 + c.w + GAP / 2;
-    el("path", { d: `M${gx - 5},${yBot + 2} l4,-8 M${gx + 1},${yBot + 2} l4,-8`, stroke: "var(--muted)", "stroke-width": 1.2 }, svg);
-    if (gd && gd > 1) { const g = el("text", { class: "tick", x: gx, y: yBot + 22, "text-anchor": "middle", "font-size": 11 }, svg); g.textContent = `${gd}d`; }
+    if (gd && gd > 1) { const g = el("text", { class: "tick", x: gx, y: yBot + 22, "text-anchor": "middle", "font-size": 11 }, svg); g.textContent = `+${gd} days`; }
   }
 });
 // decision line at the first decision point
@@ -161,18 +160,14 @@ let num = 0;
 const keyRows = [];
 cols.forEach(c => c.pts.forEach((p, k) => {
   p.cx = c.x0 + PAD + k * STEP + (c.pts.length === 1 ? c.w / 2 - PAD : 0);
-  p.li = laneIx[p.stance] ?? 3; p.cy = laneY(p.li);
+  p.li = laneIx[p.stance]; p.cy = laneY(p.li);
 }));
 const firstDec = sorted.find(p => p.decision && p.stance === "FREEZE");
-el("line", { x1: firstDec.cx, x2: firstDec.cx, y1: yTop, y2: yBot, stroke: "var(--ink)", "stroke-width": 1.4, "stroke-dasharray": "4 3" }, svg);
+
 sorted.forEach(p => {
   const color = LANES[p.li][2];
   const g = el("g", { class: "pt" }, G);
-  if (p.decision) el("circle", { cx: p.cx, cy: p.cy, r: 10.5, fill: "var(--surface)", stroke: "var(--ink)", "stroke-width": 2 }, g);
-  el("circle", { cx: p.cx, cy: p.cy, r: p.decision ? 6.5 : 6, fill: p.stance === "context" ? "var(--surface)" : color,
-    stroke: p.stance === "context" ? color : "var(--surface)", "stroke-width": 2 }, g);
-  if (p.flag === "SUPERSEDED") { const s = 7;
-    el("path", { d: `M${p.cx - s},${p.cy - s}L${p.cx + s},${p.cy + s}M${p.cx + s},${p.cy - s}L${p.cx - s},${p.cy + s}`, stroke: "var(--flag)", "stroke-width": 2.4 }, g); }
+  el("circle", { cx: p.cx, cy: p.cy, r: p.label ? 8 : 5, fill: color, stroke: "var(--surface)", "stroke-width": 2 }, g);
   if (p.label) {
     num += 1; p.num = num; keyRows.push(p);
     const by = p.cy - 22;

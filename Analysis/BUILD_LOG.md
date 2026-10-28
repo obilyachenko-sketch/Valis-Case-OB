@@ -111,3 +111,5 @@ Format for judgment calls: **JC-nn** — what looked wrong → what I decided �
 
 - **JC-31** — Ordinal (broken) time axis, not a linear one. *Reason: activity is bursty (Apr 21, May 1, Jun 10–11, Jun 15); a linear axis spends ~60% of the width on empty weeks. Gaps are labelled so the compression is visible.*
 - **JC-32** — Freeze uses aqua #1baf7a, which falls below 3:1 contrast on the light surface (validator WARN). Relief: lanes are labelled, dots aren't the only cue, and there's a table view; band label text uses ink, not aqua. *Reason: palette's first three slots are the only all-pairs-safe set.*
+| 18:58 | Prompt | "simplify the graph. move legend to the bottom, numbers have to go from 1 to 6" |
+| 19:02 | Files | Timeline simplified: dropped the context lane (open items stay in the workbook), decision rings, ✕ marks, decision line and gap slashes; key moments = bigger dot + number. Legend moved below the chart. Key is one column so it reads 1→6 top to bottom (the 2-column grid read 1,3,5 down the left). |
