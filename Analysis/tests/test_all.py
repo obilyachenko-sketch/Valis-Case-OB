@@ -117,6 +117,16 @@ class AskSlice(unittest.TestCase):
                 self.assertTrue(lines[int(n) - 1].strip(), f"{f}:L{n} is blank")
 
 
+class ValueNumber(unittest.TestCase):
+    def test_reproduces_from_raw_rows(self):
+        import value_number
+        r = value_number.main()
+        self.assertEqual(r["minutes"], 4230)
+        self.assertEqual(r["avoided_per_year"], 3120000 / 300 * 4)
+        self.assertAlmostEqual(r["measured_h_per_week"], 4230 / 60 / 13, places=2)
+        self.assertGreater(r["worst_case_h_per_week"], r["worst_case_with_autopilot"])
+
+
 class FreshFileMutation(unittest.TestCase):
     """The answers must come from the data, not be hard-coded: change the data, the answer changes."""
 

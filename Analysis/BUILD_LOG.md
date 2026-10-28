@@ -21,6 +21,7 @@ Format for judgment calls: **JC-nn** — what looked wrong → what I decided �
 | 16:56 | Prompt | "open the main questions. Generate trail" |
 | 16:56 | Read | All 11 source files read in full with line numbers (`cat -n`); CSVs profiled in Python. |
 | 16:57 | Files | Created `Analysis/BUILD_LOG.md` (this file) and `Analysis/EVIDENCE_TRAIL.md` (per-question source map). |
+| 16:57 | Commit `556baa3` | Log + trail pushed. |
 
 ## Judgment calls on the data (so far)
 
@@ -36,10 +37,44 @@ Format for judgment calls: **JC-nn** — what looked wrong → what I decided �
 - **JC-10** — Roster's open reqs list REQ-118 (Eng), REQ-121 (Content), REQ-125 (Data); Elena's May 1 post mentions "a Creator Management backfill" not in the roster, and omits Content/Data reqs. → Note discrepancy; not material to the Sales answer. *Reason: shows the roster isn't the full req picture.*
 - **JC-11** — Roster dirty rows: Felix Braun start date `2026-13-02` (invalid month), Jonas Vik blank start date, team names inconsistent (`Creator Mgmt` vs `Creator Management`). Roster lists only 29 named people vs TOTAL 300 → named list is a sample, not the population; summary counts used for headcount. *Reason: can't derive 300 from 29 rows.*
 - **JC-12** — Support tickets: 140 rows, Q1-only (2026-01-02 → 03-31), no duplicate IDs/rows, minutes all 10–55. 4 rows have blank `Assigned_To` (TCK-1013, -1038, -1068, -1100), 2 are `Open` (TCK-1127, -1128). → Keep all in time totals. *Reason: handle minutes are present; assignment blank doesn't change effort.*
-- **JC-13** — Liam claims "easily 40 hrs/week" on creator support (slack 176); logged data = 70.5 hrs for the whole quarter ≈ **5.4 hrs/week**. → Use measured figure; flag that tickets may not capture all effort (e.g., un-ticketed chasing). *Reason: Elena asked "measured or a vibe?" — this is the measured answer, ~7× lower.*
+- **JC-13** — Liam claims "easily 40 hrs/week" on creator support (slack 176); logged data = 70.5 hrs for the whole quarter ≈ **5.4 hrs/week** (13-week quarter; see JC-18, JC-19). → Use measured figure; flag that tickets may not capture all effort (e.g., un-ticketed chasing). *Reason: Elena asked "measured or a vibe?" — this is the measured answer, ~7× lower.*
 - **JC-14** — Biggest time sink candidate is the brand-deal 3-way recon (~3 days/month, Maya; slack 108, 158; finance notes 11–13; leadership notes 35), but the three source systems (CRM export, invoicing sheet, payout tracker) are **not in the bundle**. → Can quantify the time from three consistent mentions but cannot build the matcher on real data without them. *Reason: don't manufacture data; decide approach in next session.*
+
+---
+
+## Session 2 — build the three deliverables
+
+| Time | Step | Detail |
+|---|---|---|
+| 17:12 | Prompt | "keep the log. 3 outcomes: ask-with-sources slice … value number … automation" (brief deliverables 1–3). |
+| 17:13 | Files | `nwlib/sources.py` — loaders that keep provenance (`Cite(file, line, who, when)`) for P&L, roster, Slack, meeting notes, tickets; BOM-aware decoding. |
+| 17:14 | Files | `ask.py` — router + two answerers (SaaS spend, Sales hiring). Everything recomputed from raw files per run. |
+| 17:15 | First run — 4 bugs | (a) Sales answer anchored on Elena's Jun 11 *relay* ("per Dana's decision") instead of Dana's Jun 10 decision; (b) notes dated at midnight compared against timestamped Slack, dropping same-day evidence; (c) Amplitude duplicate pulled in Ben's unrelated *event* de-dup line; (d) "keep hiring into Sales or hold?" — a question — scored as HIRE. |
+| 17:16 | Fix | Decision = first statement of the final stance after the last opposite decision; compare by date; billing-word filter + same-thread invoice follow-ups; questions = context. Dead-end: first patch script aborted on a no-op assert — re-ran without it. |
+| 17:16 | Fix | Refusal path listed `.git/hooks/*` as "bundle contents" → `find()` now skips dot-dirs. |
+| 17:17 | Commit `e3f5354` | Ask slice. |
+| 17:18 | Files | `automation/support_autopilot.py` + `playbooks.json`. First run: 140/140 processed, 70.5 h → 40.6 h, 243 dry-run actions. |
+| 17:19 | Tests | `tests/test_all.py` (13 tests). **Mutation test caught a real bug:** adding "Lifting the freeze: REQ-114 approved again" still answered FROZEN (the word *freeze* matched). Added LIFT pattern; also removed three sentences that were hard-coded rather than derived (paused-not-cancelled, "three sources call roster stale", July revisit). |
+| 17:19 | Commit `f80a947` | Autopilot + builder spec + tests. |
+| 17:20 | Files | `value_number.py` → `VALUE_NUMBER.md`, `output/value_source_rows.csv`. |
+| 17:20 | Correction | I had written from memory that Ops' "#47 this week" was ~2.4× Q1's rate. Recomputed: Q1 = 4.8 thumbnails/week → **~10×**. Promoted it from footnote to the headline risk, with its own computed scenario. |
+| 17:21 | Files | This log updated; `Analysis/README.md`. |
+
+## Judgment calls (session 2)
+
+- **JC-15 — Automation target.** Largest *claimed* sink is brand-deal recon (~3 days/month, 4 consistent mentions), but its 3 inputs (CRM export, invoicing sheet, payout tracker) are not in the bundle. Brief requires it to run on this data → chose creator-support deflection (tax forms + thumbnails = 69% of measured support minutes). *Reason: biggest workflow I can run on real rows; recon stays #2 and is named in the spec.*
+- **JC-16 — Value number = support hire avoided ($41,600/yr), booked as cost avoidance, not savings.** Alternatives rejected: Amplitude $30k/yr (can't tell cash leak from booking error without the invoice); autopilot hours × $20/h ≈ $2.4k/yr (true but trivial). *Reason: every input is a raw row, and it informs a live decision (L179, L244).*
+- **JC-17 — Loaded cost per FTE = P&L salaries $3.12M ÷ roster TOTAL 300 × 4 = $41,600.** Company average, not the role's cost; P&L says "~300". *Reason: only cost basis in the bundle; listed as unverified.*
+- **JC-18 — Weeks per quarter = 13** for the value number (finance convention → 5.42 h/wk). The autopilot report uses the data span (Jan 2–Mar 31 = 12.7 wks → 5.54 h/wk). *Reason: both shown; the difference doesn't change any conclusion.*
+- **JC-19 — "#47 this week" (L193) is treated as possible Q2 counter-evidence, not dismissed.** If weekly and typical → 20.6 h/wk manual (0.52 FTE), 10.2 h/wk with the autopilot. Confidence on the value number lowered to **Medium**. *Reason: Q2 tickets aren't in the bundle; a finance reviewer would find this line.*
+- **JC-20 — `Handle_Minutes` are all multiples of 5 (10–55).** Treated as estimates, not timers. *Reason: verified on all 140 rows; listed as unverified precision.*
+- **JC-21 — Payout questions are out of automation scope** (14.6 h). *Reason: answering needs the payout tracker, same missing input as the recon.*
+- **JC-22 — Autopilot "after" is modelled.** Fallback 20%, residual 5/10 min are assumptions in `playbooks.json`, with a sensitivity table (13.1–33.7 h saved/qtr). *Reason: no post-automation data can exist yet; the spec makes measuring them step 4.*
+- **JC-23 — Meeting-note lines are dated by filename; "who" = the note-taker.** *Reason: notes have no per-line timestamps; citing the scribe keeps them distinct from the speaker's own Slack post.*
+- **JC-24 — Confidence for Sales = High**, computed: 4 independent sources (Dana, Priya, Elena, leadership minutes) on/after the decision, no later contradiction. *Reason: rubric is in the code, not hand-assigned.*
 
 ## Open / next
 
-- Write Q1 and Q2 answers with line-level citations + confidence (deliverable 1).
-- Choose value number (deliverable 2) and automation target (deliverable 3) — see JC-13/JC-14 trade-off.
+- Pull Q2 support tickets and re-run `value_number.py` + autopilot unchanged (resolves JC-19).
+- Amplitude invoice → resolves the $7,500 SaaS range.
+- Get the three recon exports → build the 3-way matcher (next automation).

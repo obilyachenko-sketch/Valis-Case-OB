@@ -1,6 +1,6 @@
 # Ask-with-sources — CEO questions
 
-_Generated 2026-10-28 17:19 by `Analysis/ask.py` from the raw files in `valis-case-ob/`. Citations are `file:Lline`._
+_Generated 2026-10-28 17:22 by `Analysis/ask.py` from the raw files in `valis-case-ob/`. Citations are `file:Lline`._
 
 **Confidence scale used**
 - **High** — read directly from a primary record *and* corroborated by an independent source; no open conflict.

@@ -1,6 +1,6 @@
 # Evidence Trail — CEO questions
 
-Every claim maps to a file and line number (line numbers from `cat -n` on the files at repo root; `CEO_QUESTIONS.md` read after UTF-16→UTF-8 conversion). Status: **preliminary** — answers are drafted in the next step.
+Every claim maps to a file and line number (line numbers from `cat -n` on the files at repo root; `CEO_QUESTIONS.md` read after UTF-16→UTF-8 conversion). Status: hand-built first pass (session 1). The generated, final answers are in `output/answers.md` (`python Analysis/ask.py --all`).
 
 ---
 
